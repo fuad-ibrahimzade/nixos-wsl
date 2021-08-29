@@ -72,10 +72,8 @@ in
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableAutosuggestions = true;
-    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-    initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
-    oh-my-zsh = {
+    autosuggestions.enable = true;
+    ohMyZsh = {
       enable = true;
       plugins = [ 
         "colored-man-pages"
@@ -94,10 +92,6 @@ in
     shellAliases = {
       ll = "ls -l";
       update = "sudo nixos-rebuild switch";
-    };
-    history = {
-      size = 10000;
-      path = "${config.xdg.dataHome}/zsh/history";
     };
   };
 
