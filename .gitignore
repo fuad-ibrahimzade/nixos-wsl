@@ -1,0 +1,5 @@
+NixOS/ext4.vhdx
+nixos-system-x86_64-linux.tar.gz
+lastminimized.txt
+lastinstalled.txt
+.env

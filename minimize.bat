@@ -1,0 +1,1 @@
+cmd.exe /min /C "cd /d %NixOSHOME% && created.bat"
