@@ -1,4 +1,5 @@
 @echo off       
+setlocal EnableDelayedExpansion
 goto end-region-old 
 @REM :: BatchGotAdmin        
 @REM :-------------------------------------        
@@ -14,13 +15,6 @@ goto end-region-old
 @REM :gotAdmin  
 @REM powershell -command "start-bitstransfer -source https://github.com/fuad-ibrahimzade/nixos-wsl/releases/download/nixos-tarball/nixos-system-x86_64-linux.tar.gz -destination nixos-system-x86_64-linux.tar.gz"
 :end-region-old
-
-@REM SET downloadUrl=https://api.github.com/users/marktiedemann
-@REM SET tempFile=%cd%\.%random%-tmp
-
-@REM BITSADMIN /transfer /download %downloadUrl% %tempFile% >nul
-@REM TYPE %tempFile%
-@REM DEL %tempFile%
 
 
 wsl --unregister NixOS
@@ -56,7 +50,18 @@ if EXIST lastinstalled.txt (
     wsl -d NixOS || (
         wsl --import NixOS .\NixOS\ nixos-system-x86_64-linux.tar.gz --version 2
         wsl -d NixOS /bin/sh -c "ls $HOME/ || /nix/var/nix/profiles/system/activate"
+        
+        @REM wsl -d NixOS /bin/sh -c "cat .bashrc | sudo tee -a $HOME/.bashrc"
+        
+        if NOT EXIST bashrc.txt (
+            SET bashrcDownloadUrl=https://raw.githubusercontent.com/fuad-ibrahimzade/nixos-wsl/main/.bashrc
+            @REM SET bashrcTempFile=%cd%\.%random%-tmp
+            SET bashrcTempFile=%cd%\.bashrc
+            BITSADMIN /transfer /download %bashrcDownloadUrl% %bashrcTempFile% >nul
+            TYPE %bashrcTempFile%
+        )
         wsl -d NixOS /bin/sh -c "cat .bashrc | sudo tee -a $HOME/.bashrc"
+
         wsl -d NixOS
     )
 )
