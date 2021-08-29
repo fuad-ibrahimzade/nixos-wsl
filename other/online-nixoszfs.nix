@@ -16,6 +16,7 @@ in
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./home-manager.nix
   ] 
     ++ (if builtins.pathExists ./cachix.nix then [ ./cachix.nix ] else []);
 
@@ -73,6 +74,7 @@ in
     enable = true;
     enableCompletion = true;
     autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
     ohMyZsh = {
       enable = true;
       plugins = [ 
@@ -82,13 +84,12 @@ in
         "vscode"
         "git" 
         "thefuck" 
-        "zsh-completions"
-        "zsh-autosuggestions" 
-        "zsh-syntax-highlighting" 
         "zsh-history-substring-search" 
       ];
       theme = "robbyrussel";
     };
+    histSize = 10000;
+    histFile = "${config.xdg.dataHome}/zsh/history";
     shellAliases = {
       ll = "ls -l";
       update = "sudo nixos-rebuild switch";
@@ -106,6 +107,8 @@ in
   ];
 
   environment.variables = { EDITOR = "vim"; };
+
+  home-manager.environment = environment;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.mutableUsers = false;
