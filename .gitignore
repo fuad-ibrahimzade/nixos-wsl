@@ -1,5 +1,8 @@
+.env
 NixOS/ext4.vhdx
 nixos-system-x86_64-linux.tar.gz
 lastminimized.txt
 lastinstalled.txt
-.env
+pre_vdisk_minimizing_script.txt
+vdisk_minimizing_script.txt
+created.bat

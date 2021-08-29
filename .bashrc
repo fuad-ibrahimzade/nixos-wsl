@@ -3,7 +3,8 @@ if [[ -z "${NixOSHOMEWindows}" ]]; then
     export NixOSHOMEWindows=$(pwd);
     # export WSLENV="$NixOSHOMEWindows/wp"
 fi
-cd /home/nixos;clear;
+cd "$HOME";clear;
+export EDITOR=vim;
 function cleanup {
     read -r -p "Choose to reduce wsl vdisk or not (default: n, [select y or n]):" reduce_vdisk
 	reduce_vdisk=${reduce_vdisk:-n}
@@ -67,3 +68,4 @@ echo %DATE% %TIME% > "%NixOSHOME%/lastminimized.txt"
     # /mnt/c/Windows/System32/cmd.exe /C "cd /d E:\\WSLd\\NixOS && NixOsMinimizeDiskImage.bat"
 }
 trap cleanup EXIT
+export EDITOR="vim";
