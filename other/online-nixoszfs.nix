@@ -75,7 +75,7 @@ in
    services.xserver.libinput.enable = true;
 
   # Enable Lumina desktop Environment
-  services.xserver.displayManager.ly.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.lumina.enable = true;
 
   # ZFS services
@@ -107,7 +107,7 @@ in
       theme = "robbyrussel";
     };
     histSize = 10000;
-    histFile = "${config.xdg.dataHome}/zsh/history";
+    histFile = "/home/qaqulya/.local/share/zsh/history";
     shellAliases = {
       ll = "ls -l";
       update = "sudo nixos-rebuild switch";
@@ -126,7 +126,7 @@ in
 
   environment.variables = { EDITOR = "vim"; };
 
-  home-manager.environment = environment;
+  # home-manager.environment = config.environment;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.mutableUsers = false;
