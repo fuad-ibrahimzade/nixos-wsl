@@ -65,23 +65,23 @@ in
   services.zfs.trim.enable = true;
 
   # ZSH shell
-  programs.zsh.enable = true;
+  # programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   # users.users.yourname.shell = pkgs.zsh;
 
   programs.zsh = {
     enable = true;
-    shellAliases = {
-      ll = "ls -l";
-      update = "sudo nixos-rebuild switch";
-    };
-    history = {
-      size = 10000;
-      path = "${config.xdg.dataHome}/zsh/history";
-    };
+    enableCompletion = true;
+    enableAutosuggestions = true;
+    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
       plugins = [ 
+        "colored-man-pages"
+        "themes"
+        "vi-mode"
+        "vscode"
         "git" 
         "thefuck" 
         "zsh-completions"
@@ -90,6 +90,14 @@ in
         "zsh-history-substring-search" 
       ];
       theme = "robbyrussel";
+    };
+    shellAliases = {
+      ll = "ls -l";
+      update = "sudo nixos-rebuild switch";
+    };
+    history = {
+      size = 10000;
+      path = "${config.xdg.dataHome}/zsh/history";
     };
   };
 
