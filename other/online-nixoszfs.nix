@@ -49,9 +49,10 @@ in
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp0s25.useDHCP = true;
-  networking.interfaces.enp0s26u1u2i6.useDHCP = true;
-  networking.interfaces.wlo1.useDHCP = true;
+  networking.interfaces.enp0s25.useDHCP = false; #to fix long nixos boot on dhcpd client
+  networking.interfaces.enp0s26u1u2i6.useDHCP = false; #to fix long nixos boot on dhcpd client
+  # networking.interfaces.wlo1.useDHCP = true; #to fix long nixos boot on dhcpd client change to wlan0
+  networking.interfaces.wlan0.useDHCP = true;
 
   systemd.services.systemd-udev-settle.enable = false; #to fix long nixos boot on dhcpd client
 
