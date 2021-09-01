@@ -47,6 +47,39 @@
       enable = true;
     };
 
+    programs.fish = {
+      enable = true;
+
+      plugins = [{
+          name="foreign-env";
+          src = pkgs.fetchFromGitHub {
+              owner = "oh-my-fish";
+              repo = "plugin-foreign-env";
+              rev = "dddd9213272a0ab848d474d0cbde12ad034e65bc";
+              sha256 = "00xqlyl3lffc5l0viin1nyp819wf81fncqyz87jx8ljjdhilmgbs";
+          };
+      }];
+
+      shellInit =
+      ''
+        https://www.lafuente.me/posts/installing-home-manager/
+        https://nixos.wiki/wiki/Fish
+        fishPlugins.foreign-env
+          todo
+          $ export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
+          echp "export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH" > .bashrc
+          # nix
+          if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+              fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          end
+
+          # home-manager
+          if test -e <nix_file_path_file>
+              fenv source <nix_file_path_file>
+          end
+      '';
+    };
+
     # home.manager.programs.zsh.initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     # home.manager.programs.zsh.    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
 
