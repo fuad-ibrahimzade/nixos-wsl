@@ -11,12 +11,17 @@ let
     read -r -p "User Name (default: user):" user_name;
     user_name=user_name;
   '';
+  home-manager= builtins.fetchGit {
+    url = "https://github.com/nix-community/home-manager.git";
+    ref = "release-21.05";
+  };
   
 in
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./home-manager.nix
+    (import "${home-manager}/nixos")
   ] 
     ++ (if builtins.pathExists ./cachix.nix then [ ./cachix.nix ] else []);
 
@@ -123,11 +128,25 @@ in
     python38Full python38Packages.pip python38Packages.poetry
     htop micro fd snapper 
     trash-cli thefuck aria2 shellcheck fbcat p7zip
+    home-manager gnutar
   ];
 
   environment.variables = { EDITOR = "vim"; };
 
+  # Home Manager initial details
   # home-manager.environment = config.environment;
+  home-manager.users.qaqulya = (import ./home.nix);
+
+  nix.nixPath=[
+    "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs"
+    "nixos-config=/etc/nixos/configuration.nix"
+    "/nix/var/nix/profiles/per-user/root/channels"
+  ];
+
+  # nix.nixPath=[
+  #   "nixpkgs=https://github.com/NixOS/nixpkgs/archive/refs/tags/21.05.tar.gz"
+  #   "nixos-config=/etc/nixos/configuration.nix"
+  # ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.mutableUsers = false;
@@ -135,7 +154,8 @@ in
     isNormalUser = true;
     createHome = true;
     home = "/home/qaqulya";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" ];
+    shell = pkgs.fish;
   };
   # users.users.root.hashedPassword = "!";
 
