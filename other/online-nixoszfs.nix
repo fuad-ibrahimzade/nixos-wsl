@@ -116,7 +116,6 @@ in
         "vscode"
         "git" 
         "thefuck" 
-        "zsh-history-substring-search" 
       ];
       theme = "robbyrussel";
     };
@@ -137,6 +136,8 @@ in
     htop micro fd snapper 
     trash-cli thefuck aria2 shellcheck fbcat p7zip
     home-manager gnutar
+    zsh-history-substring-search
+    # fishPlugins.foreign-env
   ];
 
   environment.variables = { EDITOR = "vim"; };
@@ -163,7 +164,7 @@ in
     createHome = true;
     home = "/home/qaqulya";
     extraGroups = [ "wheel" "networkmanager" "audio" ];
-    shell = pkgs.fish;
+    # shell = pkgs.fish;
   };
   # users.users.root.hashedPassword = "!";
 
