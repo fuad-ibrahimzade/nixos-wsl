@@ -62,12 +62,12 @@
 
       shellInit =
       ''
-        https://www.lafuente.me/posts/installing-home-manager/
-        https://nixos.wiki/wiki/Fish
-        fishPlugins.foreign-env
-          todo
-          $ export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
-          echp "export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH" > .bashrc
+          # https://www.lafuente.me/posts/installing-home-manager/
+          # fishPlugins.foreign-env
+          echo "export NIX_PATH=\$HOME/.nix-defexpr/channels''\${NIX_PATH:+:}\$NIX_PATH" > ./.bashrc
+          fenv source ./.bashrc
+          nix-shell https://github.com/rycee/home-manager/archive/release-18.03.tar.gz -A install
+
           # nix
           if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
               fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
