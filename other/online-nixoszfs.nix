@@ -29,6 +29,14 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Or Use GRUB EFI boot loader.
+  # boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.devices = [ "nodev" ];
+  # boot.loader.grub.efiInstallAsRemovable = true;
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.grub.useOSProber = true;
+
   networking.networkmanager.enable = true;
   networking.wireless.iwd.enable = true;
   networking.networkmanager.wifi.backend = "iwd";
