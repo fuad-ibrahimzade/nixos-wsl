@@ -86,5 +86,6 @@
 
     home.packages = [
       pkgs.htop
+      pkgs.tmux
     ];
 }
