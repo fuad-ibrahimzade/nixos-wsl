@@ -60,6 +60,7 @@
           };
       }];
 
+      # TODO
       shellInit =
       ''
           # https://www.lafuente.me/posts/installing-home-manager/

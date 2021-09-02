@@ -145,6 +145,22 @@ in
   # Home Manager initial details
   # home-manager.environment = config.environment;
   home-manager.users.qaqulya = (import ./home.nix);
+  # TODO
+  # https://nixos.wiki/wiki/Nix_Cookbook
+  # https://news.ycombinator.com/item?id=27138939
+  # https://github.com/cachix/cachix/issues/259
+  system.userActivationScripts.home-manager-setup = { 
+    text = ''
+
+    # optionally check if the current user id is the one of tomato, as this runs for every user
+
+    ${pkgs.git}/bin/git clone https://github.com/user/repo ~/location
+
+    # optionally git pull to keep them up to date
+
+    '';
+    deps = [];
+  }
 
   nix.nixPath=[
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs"
