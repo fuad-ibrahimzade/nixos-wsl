@@ -153,8 +153,9 @@ in
     text = ''
 
     # optionally check if the current user id is the one of tomato, as this runs for every user
+    nix-shell https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz -A install
 
-    ${pkgs.git}/bin/git clone https://github.com/user/repo ~/location
+    # ${pkgs.git}/bin/git clone https://github.com/user/repo ~/location
 
     # optionally git pull to keep them up to date
 
