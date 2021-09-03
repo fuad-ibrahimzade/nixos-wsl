@@ -65,7 +65,14 @@
       ''
           # https://www.lafuente.me/posts/installing-home-manager/
           # fishPlugins.foreign-env
-          
+          if status is-interactive 
+          and not set -q TMUX
+              set -g TMUX tmux new-session -d -s base
+              eval $TMUX
+              tmux attach-session -d -t base
+          end
+
+
           if not test -e ~/.bashrc
             echo "export NIX_PATH=\$HOME/.nix-defexpr/channels''\${NIX_PATH:+:}\$NIX_PATH" > ./.bashrc
           end
