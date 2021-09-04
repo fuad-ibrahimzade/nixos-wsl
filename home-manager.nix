@@ -72,8 +72,7 @@
               tmux attach-session -d -t base
           end
 
-
-
+          curl https://raw.githubusercontent.com/lilyball/nix-env.fish/master/conf.d/nix-env.fish -s -o ~/.config/fish/conf.d/nix-env.fish
 
           # nix
           if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -97,6 +96,8 @@
     home.packages = [
       pkgs.htop
       pkgs.tmux
+      pkgs.wget
+      pkgs.curl
       pkgs.glibcLocales
     ];
 }
