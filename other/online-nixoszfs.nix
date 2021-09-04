@@ -154,6 +154,8 @@ in
 
     # optionally check if the current user id is the one of tomato, as this runs for every user
     # nix-shell https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz -A install
+    # nix-shell -p nix-prefetch-url --run ' nix-prefetch-url --unpack https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz ' -A intall
+
 
     # ${pkgs.git}/bin/git clone https://github.com/user/repo ~/location
 
