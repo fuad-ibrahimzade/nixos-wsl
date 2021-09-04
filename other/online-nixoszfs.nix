@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
   your_hostid = pkgs.writeShellScriptBin "your_hostid" ''
     echo $(head -c 8 /etc/machine-id)
