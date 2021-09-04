@@ -84,6 +84,7 @@
           if not test -e ~/.bashrc
             echo "export NIX_PATH=\$HOME/.nix-defexpr/channels''\${NIX_PATH:+:}\$NIX_PATH" > ~/.bashrc
             echo "export LOCALE_ARCHIVE=\"$HOME/.nix-profile/lib/locale/locale-archive\"" > ~/.bashrc
+            echo "export LOCALE_ARCHIVE=\"\$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive\"" > ~/.bashrc
           end
           fenv source ~/.bashrc
       '';
