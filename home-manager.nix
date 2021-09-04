@@ -73,21 +73,19 @@
           end
 
 
-          if not test -e ~/.bashrc
-            echo "export NIX_PATH=\$HOME/.nix-defexpr/channels''\${NIX_PATH:+:}\$NIX_PATH" > ~/.bashrc
-            echo "export LOCALE_ARCHIVE=\"$HOME/.nix-profile/lib/locale/locale-archive\"" > ~/.bashrc
-          end
-          fenv source ~/.bashrc
+
 
           # nix
           if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
               fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
           end
 
-          # home-manager
-          if test -e <nix_file_path_file>
-              fenv source <nix_file_path_file>
+          # home-manager fix
+          if not test -e ~/.bashrc
+            echo "export NIX_PATH=\$HOME/.nix-defexpr/channels''\${NIX_PATH:+:}\$NIX_PATH" > ~/.bashrc
+            echo "export LOCALE_ARCHIVE=\"$HOME/.nix-profile/lib/locale/locale-archive\"" > ~/.bashrc
           end
+          fenv source ~/.bashrc
       '';
     };
 
