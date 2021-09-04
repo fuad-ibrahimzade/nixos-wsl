@@ -98,6 +98,6 @@
       pkgs.tmux
       pkgs.wget
       pkgs.curl
-      pkgs.glibcLocales
+      # pkgs.glibcLocales
     ];
 }

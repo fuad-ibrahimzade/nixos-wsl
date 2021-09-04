@@ -155,7 +155,8 @@ in
     # optionally check if the current user id is the one of tomato, as this runs for every user
     # nix-shell https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz -A install
     # nix-shell -p nix-prefetch-url --run ' nix-prefetch-url --unpack https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz ' -A intall
-
+    # nix-env -i -f https://github.com/dustinlacewell/home-manager-helper/archive/master.tar.gz
+    # hm
 
     # ${pkgs.git}/bin/git clone https://github.com/user/repo ~/location
 
@@ -164,6 +165,11 @@ in
     '';
     deps = [];
   }
+
+  i18n.glibcLocales = lib.hiPrio (pkgs.buildPackages.glibcLocales.override {
+    allLocales = lib.any (x: x == "all") config.i18n.supportedLocales;
+    locales = config.i18n.supportedLocales;
+  });
 
   nix.nixPath=[
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs"
