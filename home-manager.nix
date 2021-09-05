@@ -79,18 +79,25 @@
               fenv source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
           end
 
+
+          # home-manager fix old
+          # if not test -e ~/.bashrc
+          #   echo "export NIX_PATH=\$HOME/.nix-defexpr/channels\''\${NIX_PATH:''\+:}\$NIX_PATH" > ~/.bashrc
+          #   echo "export LOCALE_ARCHIVE=\"\$HOME/.nix-profile/lib/locale/locale-archive\"" > ~/.bashrc
+          #   # echo "export LOCALE_ARCHIVE=\"\$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive\"" > ~/.bashrc
+          # end
+          # fenv source ~/.bashrc
+
+          # home-manager fix current
           set -gx EDITOR vim
           set -gx VISUAL vim
           fenv function_path $function_path ~/plugin-foreign-env/functions
-          fenv source ~/.nix-profile/etc/profile.d/nix.sh
-
-          # home-manager fix
-          if not test -e ~/.bashrc
-            echo "export NIX_PATH=\$HOME/.nix-defexpr/channels\''\${NIX_PATH:''\+:}\$NIX_PATH" > ~/.bashrc
-            echo "export LOCALE_ARCHIVE=\"\$HOME/.nix-profile/lib/locale/locale-archive\"" > ~/.bashrc
-            # echo "export LOCALE_ARCHIVE=\"\$(nix-env --installed --no-name --out-path --query glibc-locales)/lib/locale/locale-archive\"" > ~/.bashrc
+          if not test -e ~/.nix-profile/etc/profile.d/nix.sh
+            fenv source ~/.nix-profile/etc/profile.d/nix.sh
           end
-          fenv source ~/.bashrc
+          if not test -e ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+            fenv source ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+          end
       '';
 
       promptInit = ''
