@@ -166,10 +166,24 @@ in
     deps = [];
   }
 
-  i18n.glibcLocales = lib.hiPrio (pkgs.buildPackages.glibcLocales.override {
-    allLocales = lib.any (x: x == "all") config.i18n.supportedLocales;
-    locales = config.i18n.supportedLocales;
-  });
+  # https://nixos.wiki/wiki/IBus
+  # https://photonsphere.org/posts/2020-02-19-nixos-configuration.html
+  # fish locale fixes
+  i18n = {
+    #consoleFont = "Lat2-Terminus16";
+    #consoleKeyMap = "us";
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = { LC_MESSAGES = "en_US.UTF-8"; LC_TIME = "az_AZ"; };
+    glibcLocales = lib.hiPrio (pkgs.buildPackages.glibcLocales.override {
+      allLocales = lib.any (x: x == "all") config.i18n.supportedLocales;
+      locales = config.i18n.supportedLocales;
+    });
+  };
+
+  # console = {
+  #   font = "Lat2-Terminus16";
+  #   keyMap = "us";
+  # };
 
   nix.nixPath=[
     "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs"
