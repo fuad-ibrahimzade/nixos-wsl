@@ -87,6 +87,10 @@
           end
           fenv source ~/.bashrc
       '';
+
+      promptInit = ''
+        any-nix-shell fish --info-right | source
+      '';
     };
 
     # home.manager.programs.zsh.initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
@@ -99,5 +103,6 @@
       pkgs.wget
       pkgs.curl
       # pkgs.glibcLocales
+      pkgs.any-nix-shell
     ];
 }
