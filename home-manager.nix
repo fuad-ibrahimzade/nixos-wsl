@@ -91,7 +91,7 @@
           # home-manager fix current
           set -gx EDITOR vim
           set -gx VISUAL vim
-          fenv function_path $function_path ~/plugin-foreign-env/functions
+          set fish_function_path $fish_function_path ~/plugin-foreign-env/functions
           if not test -e ~/.nix-profile/etc/profile.d/nix.sh
             fenv source ~/.nix-profile/etc/profile.d/nix.sh
           end
