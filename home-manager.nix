@@ -13,8 +13,8 @@
     #
     # You need to change these to match your username and home directory
     # path:
-    #home.username = "$USER";
-    #home.homeDirectory = "$HOME";
+    home.username = "qaqulya";
+    home.homeDirectory = "/home/qaqulya";
 
     # If you use non-standard XDG locations, set these options to the
     # appropriate paths:
@@ -92,10 +92,10 @@
           set -gx EDITOR vim
           set -gx VISUAL vim
           set fish_function_path $fish_function_path ~/plugin-foreign-env/functions
-          if not test -e ~/.nix-profile/etc/profile.d/nix.sh
+          if test -e ~/.nix-profile/etc/profile.d/nix.sh
             fenv source ~/.nix-profile/etc/profile.d/nix.sh
           end
-          if not test -e ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+          if test -e ~/.nix-profile/etc/profile.d/hm-session-vars.sh
             fenv source ~/.nix-profile/etc/profile.d/hm-session-vars.sh
           end
       '';
