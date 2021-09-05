@@ -92,6 +92,9 @@ in
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.lumina.enable = true;
   # services.xserver.windowManager.exwm.enable = true
+  
+  # services.xserver.displayManager.startx.enable = true;
+  # services.xserver.windowManager.notion.enable = true
 
   # ZFS services
   services.zfs.autoSnapshot.enable = true;
