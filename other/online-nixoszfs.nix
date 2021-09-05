@@ -93,16 +93,20 @@ in
   services.xserver.desktopManager.lumina.enable = true;
   # services.xserver.windowManager.exwm.enable = true
 
-  services.xserver.displayManager.lightdm.greeters.mini = {
-      enable = true;
-      # user = "your-username";
-      extraConfig = ''
-          [greeter]
-          show-password-label = true
-          [greeter-theme]
-          background-image = ""
-      '';
-  };
+  services.xserver.displayManager.lightdm = {
+    enable = true;
+    greeters.mini = {
+        enable = true;
+        user = "qaqulya";
+        extraConfig = ''
+            [greeter]
+            show-password-label = true
+            [greeter-theme]
+            background-image = ""
+        '';
+    };
+  }
+  
   services.xserver.windowManager.notion.enable = true
   # services.xserver.displayManager.xpra = true
   # services.xserver.displayManager.startx.enable = true;
