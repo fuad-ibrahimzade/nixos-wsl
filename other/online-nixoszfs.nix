@@ -89,12 +89,23 @@ in
    services.xserver.libinput.enable = true;
 
   # Enable Lumina desktop Environment
-  services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.lumina.enable = true;
   # services.xserver.windowManager.exwm.enable = true
-  
+
+  services.xserver.displayManager.lightdm.greeters.mini = {
+      enable = true;
+      # user = "your-username";
+      extraConfig = ''
+          [greeter]
+          show-password-label = true
+          [greeter-theme]
+          background-image = ""
+      '';
+  };
+  services.xserver.windowManager.notion.enable = true
+  # services.xserver.displayManager.xpra = true
   # services.xserver.displayManager.startx.enable = true;
-  # services.xserver.windowManager.notion.enable = true
 
   # ZFS services
   services.zfs.autoSnapshot.enable = true;

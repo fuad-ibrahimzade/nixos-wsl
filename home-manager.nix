@@ -40,9 +40,13 @@
       path = "https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz";
     };
 
-    # Since we do not install home-manager, you need to let home-manager
-    # manage your shell, otherwise it will not be able to add its hooks
-    # to your profile.
+    programs.git = {
+      enable = true;
+      userName = "fuad-ibrahimzade";
+      userEmail = "i.fuad.tm@gmail.com";
+      extraConfig.pull.rebase = false;
+    };
+
     programs.bash = {
       enable = true;
     };
