@@ -91,6 +91,7 @@ in
   # Enable Lumina desktop Environment
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.lumina.enable = true;
+  # services.xserver.windowManager.exwm.enable = true
 
   # ZFS services
   services.zfs.autoSnapshot.enable = true;
@@ -157,6 +158,9 @@ in
     # nix-shell -p nix-prefetch-url --run ' nix-prefetch-url --unpack https://github.com/nix-community/home-manager/archive/release-21.05.tar.gz ' -A intall
     # nix-env -i -f https://github.com/dustinlacewell/home-manager-helper/archive/master.tar.gz
     # hm
+
+    # nix-env -i -f https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz #comma run without installing
+    # , cowsay neato
 
     # ${pkgs.git}/bin/git clone https://github.com/user/repo ~/location
 
