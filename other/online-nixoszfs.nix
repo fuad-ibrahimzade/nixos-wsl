@@ -90,7 +90,24 @@ in
 
   # Enable Lumina desktop Environment
   # services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.lumina.enable = true;
+  # services.xserver.desktopManager.lumina.enable = true;
+  services.xserver.desktopManager.mate.enable = true;
+  services.compton = {
+    enable = true;
+    shadow = true;
+    inactiveOpacity = "0.8";
+    # backend = "glx";
+    # vSync = "opengl-swc";
+    # paintOnOverlay = true;
+  }
+  # services.xserver.videoDrivers = [ "modesetting" ];
+  # services.xserver.useGlamor = true;
+
+  # services.xserver.videoDrivers = [ "intel" ];
+  # services.xserver.deviceSection = ''
+  #   Option "DRI" "2"
+  #   Option "TearFree" "true"
+  # '';
   # services.xserver.windowManager.exwm.enable = true
 
   services.xserver.displayManager.lightdm = {
@@ -108,6 +125,11 @@ in
   }
   
   services.xserver.windowManager.notion.enable = true
+  services.xserver.desktopManager.xterm.enable = false;
+  # services.xserver.windowManager.i3.enable = true;
+  # services.xserver.windowManager.i3.package = pkgs.i3-gaps;
+  programs.dconf.enable = true;
+
   # services.xserver.displayManager.xpra = true
   # services.xserver.displayManager.startx.enable = true;
 

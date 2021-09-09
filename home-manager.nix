@@ -76,7 +76,9 @@
               tmux attach-session -d -t base
           end
 
-          curl https://raw.githubusercontent.com/lilyball/nix-env.fish/master/conf.d/nix-env.fish -s -o ~/.config/fish/conf.d/nix-env.fish
+          if test -e ~/.config/fish/conf.d/nix-env.fish
+              curl https://raw.githubusercontent.com/lilyball/nix-env.fish/master/conf.d/nix-env.fish -s -o ~/.config/fish/conf.d/nix-env.fish
+          end
 
           # nix
           if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -120,5 +122,6 @@
       pkgs.curl
       # pkgs.glibcLocales
       pkgs.any-nix-shell
+      pkgs.home-manager
     ];
 }
