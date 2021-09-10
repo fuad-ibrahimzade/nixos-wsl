@@ -112,17 +112,23 @@ in
 
   services.xserver.displayManager.lightdm = {
     enable = true;
-    greeters.mini = {
+    # greeters.mini = {
+    #     enable = true;
+    #     user = "qaqulya";
+    #     extraConfig = ''
+    #         [greeter]
+    #         show-password-label = true
+    #         [greeter-theme]
+    #         background-image = ""
+    #     '';
+    # };
+    greeters.tiny = {
         enable = true;
-        user = "qaqulya";
-        extraConfig = ''
-            [greeter]
-            show-password-label = true
-            [greeter-theme]
-            background-image = ""
-        '';
+        # extraConfig = ''
+        # '';
     };
   };
+  services.xserver.displayManager.defaultSession = "none+notion";
   
   services.xserver.windowManager.notion.enable = true;
   services.xserver.desktopManager.xterm.enable = false;
