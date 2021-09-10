@@ -99,7 +99,7 @@ in
     # backend = "glx";
     # vSync = "opengl-swc";
     # paintOnOverlay = true;
-  }
+  };
   # services.xserver.videoDrivers = [ "modesetting" ];
   # services.xserver.useGlamor = true;
 
@@ -122,9 +122,9 @@ in
             background-image = ""
         '';
     };
-  }
+  };
   
-  services.xserver.windowManager.notion.enable = true
+  services.xserver.windowManager.notion.enable = true;
   services.xserver.desktopManager.xterm.enable = false;
   # services.xserver.windowManager.i3.enable = true;
   # services.xserver.windowManager.i3.package = pkgs.i3-gaps;
@@ -185,11 +185,13 @@ in
 
   # Home Manager initial details
   # home-manager.environment = config.environment;
-  home-manager.users.qaqulya = (import ./home.nix);
+  home-manager.users.qaqulya = (import ./home-manager.nix);
   # TODO
   # https://nixos.wiki/wiki/Nix_Cookbook
   # https://news.ycombinator.com/item?id=27138939
   # https://github.com/cachix/cachix/issues/259
+  # https://cinnamon-spices.linuxmint.com/extensions/view/76
+  # https://github.com/fuhsjr00/bug.n
   system.userActivationScripts.home-manager-setup = { 
     text = ''
 
