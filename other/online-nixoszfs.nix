@@ -95,7 +95,7 @@ in
   services.compton = {
     enable = true;
     shadow = true;
-    inactiveOpacity = "0.8";
+    inactiveOpacity = 0.8;
     # backend = "glx";
     # vSync = "opengl-swc";
     # paintOnOverlay = true;
