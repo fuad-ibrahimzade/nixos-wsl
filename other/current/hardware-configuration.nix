@@ -28,6 +28,20 @@
       fsType = "vfat";
     };
 
-  swapDevices = [ ];
+  swapDevices = [ 
+    { 
+      device = "/dev/sda2";
+      priority = 1;
+    } 
+  ];
+
+  zramSwap = {
+    enable = true;
+    memoryPercent = 40;
+    numDevices = 1;
+    priority = 10;
+  };
+
+
 
 }

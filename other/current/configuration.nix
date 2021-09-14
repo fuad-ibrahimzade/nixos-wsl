@@ -31,19 +31,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  zramSwap = {
-    enable = true;
-    memoryPercent = 40;
-    numDevices = 1;
-    priority = 10;
-  };
-
-  swapDevices = [ 
-    { 
-      "device" : "/dev/sda2";
-      "priority" : 1;
-    } 
-  ];
   # Or Use GRUB EFI boot loader.
   # boot.loader.efi.canTouchEfiVariables = true;
   # boot.loader.grub.enable = true;
