@@ -207,10 +207,10 @@ initAndMountPartitions() {
 
 	sudo partprobe;
 
-	disk_size_float=$(sudo fdisk -l | grep Disk | grep Output_Device | awk -F"GiB" '{print $1}' | awk -F: '{print $2}'| tr '\n' ' ' | sed -e 's/^[[:space:]]*//')
+	disk_size_float=$(sudo fdisk -l | grep Disk | grep $Output_Device | awk -F"GiB" '{print $1}' | awk -F: '{print $2}'| tr '\n' ' ' | sed -e 's/^[[:space:]]*//')
 	disk_size=$(("${disk_size_float%.*}" + 1 ))
 	if [[ "$disk_size" -gt 16 ]]; then
-		sudo sgdisk -n 0:0:+4GiB -t 0:8200 -c 0:swap "$DISK"
+		sudo sgdisk -n 0:0:+10GiB -t 0:8200 -c 0:swap "$DISK"
 	else
 		sudo sgdisk -n 0:0:+1GiB -t 0:8200 -c 0:swap "$DISK"
 	fi
