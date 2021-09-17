@@ -115,10 +115,10 @@ in
     serviceConfig.ExecStart = "${pkgs.rxvt_unicode}/bin/urxvtd -q -o";
   };
 
-  #fonts = {
-    #fontDir.enable = true;
-    #enableGhostscriptFonts = true;
-    #fonts = with pkgs; [
+  fonts = {
+    fontDir.enable = true;
+    enableGhostscriptFonts = true;
+    fonts = with pkgs; [
       #anonymousPro
       #corefonts
       #dejavu_fonts
@@ -127,14 +127,14 @@ in
       #google-fonts
       #inconsolata
       #liberation_ttf
-      #powerline-fonts
+      powerline-fonts
       #source-code-pro
       #terminus_font
       #ttf_bitstream_vera
       #ubuntu_font_family
-    #];
-  #};
-#
+    ];
+  };
+
   #services.xserver.displayManager.sessionCommands =  ''
        #xrdb "${pkgs.writeText  "xrdb.conf" ''
           #URxvt.font:                 xft:Dejavu Sans Mono for Powerline:size=11
@@ -333,7 +333,8 @@ programs.zsh.interactiveShellInit = ''
     vimHugeX #for gvim
     rofi
     oh-my-zsh
-    zsh-powerlevel10k
+    zsh-powerlevel10k 
+    #meslo-lgs-nf
     #dbus
     #libdbusmenu
     #libdbusmenu_qt
@@ -375,6 +376,10 @@ programs.zsh.interactiveShellInit = ''
     # hm
 
     echo a
+    handlrResult="$(handlr get inode/directory)"
+    if [[ "$handlrResult" == "code.desktop" ]]; then
+      handlr set "inode/directory" pcmanfm-qt.desktop
+    fi
     # nix-env -i -f https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz #comma run without installing
     # , cowsay neato
 
