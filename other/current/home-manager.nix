@@ -1,4 +1,9 @@
 { config, pkgs, ... }:
+let
+  comma = builtins.fetchTarball {
+    url = "https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz";
+  };
+in
 {
    # The home-manager manual is at:
     #
@@ -157,12 +162,12 @@
     programs.chromium = {
       enable = true;
       extensions = [
-        annfbnbieaamhaimclajlajpijgkdblo
-        cjpalhdlnbpafiamejdnhcphjbkeiagm
-        eimadpbcbfnmbkopoojfekhnkhdbieeh
-        fnaicdffflnofjppbagibeoednhnbjhg
-        gcbommkclmclpchllfjekcdonpmejbdp
-        hfjbmagddngcpeloejdejnfgbamkjaeg
+        #"annfbnbieaamhaimclajlajpijgkdblo"
+        "cjpalhdlnbpafiamejdnhcphjbkeiagm"
+        "eimadpbcbfnmbkopoojfekhnkhdbieeh"
+        "fnaicdffflnofjppbagibeoednhnbjhg"
+        "gcbommkclmclpchllfjekcdonpmejbdp"
+        "hfjbmagddngcpeloejdejnfgbamkjaeg"
       ]; 
     };
 
@@ -182,5 +187,7 @@
        #pkgs.dotnet-sdk_3
        #pkgs.dotnet-sdk
        pkgs.nodejs
+       comma
     ];
 }
+

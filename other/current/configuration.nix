@@ -328,6 +328,21 @@ programs.zsh.interactiveShellInit = ''
      echo "tmux kill-session" >>  ~/.zlogout
    fi
 
+   addPath(){
+    newpath="$1"
+    export PATH=$PATH:$newpath
+   }
+
+   removeFromPath() {
+    local p d
+    p=":$1:"
+    d=":$PATH:"
+    d="''\${d//''\$p/:}"
+    d="''\${d/#:/}"
+    export PATH="''\${d/%:/}"
+   }
+
+
 #
    #if [ -f ~/.aliases ]; then
      #source ~/.aliases
@@ -338,6 +353,8 @@ programs.zsh.interactiveShellInit = ''
  programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
 
   services.gnome.gnome-keyring.enable = true;
+  security.pam.services.lightdm.enableGnomeKeyring = true;
+  programs.ssh.startAgent = true;
 
   environment.systemPackages = with pkgs; [
     nox nix-du graphviz nix-index
@@ -345,6 +362,7 @@ programs.zsh.interactiveShellInit = ''
     wget curl vim git rsync
     python38Full python38Packages.pip python38Packages.poetry
     htop micro fd snapper direnv comma
+    steam-run steam-run-native
     trash-cli thefuck aria2 shellcheck fbcat p7zip
     gnutar
     zsh-history-substring-search
