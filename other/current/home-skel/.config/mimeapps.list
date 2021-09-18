@@ -1,4 +1,5 @@
 [Added Associations]
+application/octet-stream=gvim.desktop;
 
 [Default Applications]
 inode/directory=pcmanfm-qt.desktop;
