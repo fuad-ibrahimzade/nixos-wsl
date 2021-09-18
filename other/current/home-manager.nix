@@ -154,6 +154,17 @@
     # home.manager.programs.zsh.initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     # home.manager.programs.zsh.    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
 
+    programs.chromium = {
+      enable = true;
+      extensions = [
+        annfbnbieaamhaimclajlajpijgkdblo
+        cjpalhdlnbpafiamejdnhcphjbkeiagm
+        eimadpbcbfnmbkopoojfekhnkhdbieeh
+        fnaicdffflnofjppbagibeoednhnbjhg
+        gcbommkclmclpchllfjekcdonpmejbdp
+        hfjbmagddngcpeloejdejnfgbamkjaeg
+      ]; 
+    };
 
     nixpkgs.config.allowUnfree = true;
 
@@ -167,5 +178,9 @@
        pkgs.home-manager
 #       pkgs.feh
 #      #pkgs.qutebrowser
+       pkgs.dotnet-sdk_5
+       #pkgs.dotnet-sdk_3
+       #pkgs.dotnet-sdk
+       pkgs.nodejs
     ];
 }

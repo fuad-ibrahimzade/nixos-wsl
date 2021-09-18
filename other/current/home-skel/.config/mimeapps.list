@@ -1,0 +1,5 @@
+[Added Associations]
+
+[Default Applications]
+inode/directory=pcmanfm-qt.desktop;
+text/plain=gvim.desktop;

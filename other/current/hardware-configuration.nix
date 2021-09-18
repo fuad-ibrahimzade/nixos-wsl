@@ -24,24 +24,21 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/853C-6583";
+    { device = "/dev/disk/by-uuid/D7A4-6DCE";
       fsType = "vfat";
     };
 
-  swapDevices = [ 
-    { 
-      device = "/dev/sda2";
-      priority = 1;
-    } 
-  ];
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/52b243e2-c706-48d1-827e-1c8267cdbd29"; priority = 1; }
+    ];
 
   zramSwap = {
     enable = true;
     memoryPercent = 40;
     numDevices = 1;
+    swapDevices = 1;
     priority = 10;
   };
-
 
 
 }

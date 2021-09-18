@@ -17,7 +17,10 @@ let
   };
   
   #home-manager = (import ./home-manager.nix).home-manager;  
-  
+  comma = builtins.fetchTarball {
+    url = "https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz";
+  };
+
 in
 {
   imports = [ # Include the results of the hardware scan.
@@ -29,10 +32,10 @@ in
   
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.canTouchEfiVariables = false;
 
   # Or Use GRUB EFI boot loader.
-  # boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.efi.canTouchEfiVariables = false;
   # boot.loader.grub.enable = true;
   # boot.loader.grub.devices = [ "nodev" ];
   # boot.loader.grub.efiInstallAsRemovable = true;
@@ -54,7 +57,7 @@ in
   boot.zfs.requestEncryptionCredentials = true;
   boot.tmpOnTmpfs = true;
 
-  networking.hostId = "be5c3fbe";
+  networking.hostId = "700489c6";
   # networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.wireless.networks.your_wifiname.pskRaw = "your_pskRaw_generated";
@@ -84,8 +87,10 @@ in
 
   # Enable the X11 windowing system.
    services.xserver.enable = true;
-   services.xserver.layout = "us";
+   services.xserver.layout = "us,ru,az";
   # services.xserver.xkbOptions = "eurosign:e";
+   services.xserver.xkbOptions = "grp:win_space_toggle";
+
 
   # Enable touchpad support.
    services.xserver.libinput.enable = true;
@@ -121,7 +126,7 @@ in
     fonts = with pkgs; [
       #anonymousPro
       #corefonts
-      #dejavu_fonts
+      dejavu_fonts
       #noto-fonts
       #freefont_ttf
       #google-fonts
@@ -129,9 +134,11 @@ in
       #liberation_ttf
       powerline-fonts
       #source-code-pro
-      #terminus_font
+      terminus_font
       #ttf_bitstream_vera
       #ubuntu_font_family
+      (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" "Meslo" ]; })
+
     ];
   };
 
@@ -223,7 +230,7 @@ in
 
   services.xserver.displayManager.lightdm = {
     enable = true;
-    background = "/home/qaqulya/.background-image/image1.png";
+    background = "/home/qaqulya/.config/background-image/nixos.png";
  };
   #services.xserver.displayManager.defaultSession = "none+notion";
   
@@ -300,12 +307,26 @@ programs.zsh.interactiveShellInit = ''
     session="base_$(uuidgen)"
     tmux has-session -t $session 2>/dev/null
     if [ $? != 0 ]; then
-      export TMUX="tmux new-session -d -s $session"
-      eval $TMUX
+      #export TMUX="tmux new-session -d -s $session"
+      $eval $TMUX
+      tmux attach -t "$session" || tmux new -s "$session"; exit
     fi
-    tmux attach-session -d -t $session
+    #tmux attach-session -d -t $session
    fi
 
+   #if which tmux 2>&1 >/dev/null; then
+     #if [ $TERM != "screen-256color" ] && [  $TERM != "screen" ]; then
+         #tmux attach -t hack || tmux new -s hack; exit
+     #fi
+   #fi
+
+   #_TRAPEXIT() {
+   #   tmux kill-session;
+   #}
+   #trap _TRAPEXIT EXIT
+   if [[ ! -f ~/.zlogout ]]; then
+     echo "tmux kill-session" >>  ~/.zlogout
+   fi
 
 #
    #if [ -f ~/.aliases ]; then
@@ -319,11 +340,11 @@ programs.zsh.interactiveShellInit = ''
   services.gnome.gnome-keyring.enable = true;
 
   environment.systemPackages = with pkgs; [
-    nox nix-du graphviz
+    nox nix-du graphviz nix-index
     nixpkgs-fmt
     wget curl vim git rsync
     python38Full python38Packages.pip python38Packages.poetry
-    htop micro fd snapper 
+    htop micro fd snapper direnv comma
     trash-cli thefuck aria2 shellcheck fbcat p7zip
     gnutar
     zsh-history-substring-search
@@ -333,8 +354,10 @@ programs.zsh.interactiveShellInit = ''
     vimHugeX #for gvim
     rofi
     oh-my-zsh
-    zsh-powerlevel10k 
-    #meslo-lgs-nf
+    zsh-powerlevel10k
+    flat-remix-gtk flat-remix-icon-theme glib
+    #haskellPackages.greenclip
+    copyq
     #dbus
     #libdbusmenu
     #libdbusmenu_qt
@@ -348,7 +371,8 @@ programs.zsh.interactiveShellInit = ''
     #libsForQt5.qtstyleplugins
     # fishPlugins.foreign-env
     htop tmux wget curl any-nix-shell
-    lynx qutebrowser chromium
+    lynx qutebrowser 
+    #chromium
     # glibcLocales
     #home-manager
   ];
@@ -376,10 +400,6 @@ programs.zsh.interactiveShellInit = ''
     # hm
 
     echo a
-    handlrResult="$(handlr get inode/directory)"
-    if [[ "$handlrResult" == "code.desktop" ]]; then
-      handlr set "inode/directory" pcmanfm-qt.desktop
-    fi
     # nix-env -i -f https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz #comma run without installing
     # , cowsay neato
 
