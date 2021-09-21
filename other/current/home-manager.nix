@@ -1,10 +1,19 @@
 { config, pkgs, ... }:
 let
-  comma = builtins.fetchTarball {
-    url = "https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz";
-  };
+  #comma = builtins.fetchTarball {
+  #  url = "https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz";
+  #};
+  #comma= builtins.fetchGit {
+  #  url = "https://github.com/Shopify/comma.git";
+  #  ref = "1.0.0";
+  #};
+ 
 in
 {
+   
+   #imports = [
+   #  (import "${comma}/")
+   #];
    # The home-manager manual is at:
     #
     #   https://rycee.gitlab.io/home-manager/release-notes.html
@@ -174,20 +183,16 @@ in
     nixpkgs.config.allowUnfree = true;
 
     home.packages = [
-#      pkgs.htop
-#      pkgs.tmux
-#      pkgs.wget
-#      pkgs.curl
-#      # pkgs.glibcLocales
-#      pkgs.any-nix-shell
+      # pkgs.glibcLocales
+       # fishPlugins.foreign-env
        pkgs.home-manager
-#       pkgs.feh
-#      #pkgs.qutebrowser
+       pkgs.qutebrowser
+       pkgs.python38Full pkgs.python38Packages.pip pkgs.python38Packages.poetry
        pkgs.dotnet-sdk_5
        #pkgs.dotnet-sdk_3
        #pkgs.dotnet-sdk
        pkgs.nodejs
-       comma
+       #pkgs.comma
     ];
 }
 

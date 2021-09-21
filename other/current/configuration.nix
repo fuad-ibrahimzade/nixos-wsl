@@ -21,6 +21,10 @@ let
     url = "https://github.com/Shopify/comma/archive/refs/tags/1.0.0.tar.gz";
   };
 
+  graphanix = builtins.fetchTarball {
+    url = "https://github.com/stolyaroleh/grafanix/archive/refs/tags/v0.2.tar.gz";
+  };
+
 in
 {
   imports = [ # Include the results of the hardware scan.
@@ -88,7 +92,9 @@ in
   # Enable the X11 windowing system.
    services.xserver.enable = true;
    services.xserver.layout = "us,ru,az";
-  # services.xserver.xkbOptions = "eurosign:e";
+   # services.xserver.xkbOptions = "eurosign:e";
+   #services.xserver.xkbVariant = "workman,";
+   services.xserver.xkbVariant = "alt-intl,";
    services.xserver.xkbOptions = "grp:win_space_toggle";
 
 
@@ -342,7 +348,16 @@ programs.zsh.interactiveShellInit = ''
     export PATH="''\${d/%:/}"
    }
 
+   deleteOnlyOldGenerationConfigs() {
+    sudo nix-env -p /nix/var/nix/profiles/system --delete-generations old
+    # nix-collect-garbage -d
+    ## Remove entries from /boot/loader/entries:
+    currentgen=$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | grep current | awk 'print $1')
+    sudo bash -c "cd /boot/loader/entries; ls | grep -v $currentgen | xargs rm"
+   }
 
+   bindkey '^[[A' history-substring-search-up
+   bindkey '^[[B' history-substring-search-down
 #
    #if [ -f ~/.aliases ]; then
      #source ~/.aliases
@@ -355,27 +370,22 @@ programs.zsh.interactiveShellInit = ''
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
   programs.ssh.startAgent = true;
+  programs.command-not-found.enable = true;
 
   environment.systemPackages = with pkgs; [
-    nox nix-du graphviz nix-index
-    nixpkgs-fmt
-    wget curl vim git rsync
-    python38Full python38Packages.pip python38Packages.poetry
-    htop micro fd snapper direnv comma
-    steam-run steam-run-native
-    trash-cli thefuck aria2 shellcheck fbcat p7zip
+    nox nix-du graphviz nix-index nixpkgs-fmt  
     gnutar
-    zsh-history-substring-search
-    handlr
-    alacritty kitty st rxvt_unicode
-    feh
-    vimHugeX #for gvim
-    rofi
-    oh-my-zsh
-    zsh-powerlevel10k
-    flat-remix-gtk flat-remix-icon-theme glib
+    (callPackage "${comma}/default.nix" {})
+    #(callPackage "${graphanix}/default.nix" {})
+    any-nix-shell steam-run steam-run-native direnv nix-bundle
+    wget curl vim git rsync htop micro fd tmux lynx ncdu snapper
+    trash-cli thefuck aria2 shellcheck fbcat p7zip
+    handlr copyq feh rofi vimHugeX #for gvim  
     #haskellPackages.greenclip
-    copyq
+    i3lock-fancy gxkb xxkb
+    libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
+    alacritty kitty st rxvt_unicode
+    oh-my-zsh zsh-history-substring-search zsh-powerlevel10k
     #dbus
     #libdbusmenu
     #libdbusmenu_qt
@@ -384,15 +394,10 @@ programs.zsh.interactiveShellInit = ''
     #libsForQt5.libdbusmenu
     #libsForQt5.full
     #cmake dmenu
-    #qtstyleplugin-kvantum-qt4
-    libsForQt5.qtstyleplugin-kvantum
-    #libsForQt5.qtstyleplugins
     # fishPlugins.foreign-env
-    htop tmux wget curl any-nix-shell
-    lynx qutebrowser 
-    #chromium
     # glibcLocales
     #home-manager
+    #python38Full python38Packages.pip python38Packages.poetry
   ];
 
  
