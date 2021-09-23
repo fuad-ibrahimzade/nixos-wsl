@@ -25,12 +25,15 @@ let
     url = "https://github.com/stolyaroleh/grafanix/archive/refs/tags/v0.2.tar.gz";
   };
 
+  kbi = (import "/etc/nixos/kbi");
+
 in
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     #./home-manager.nix
     (import "${home-manager}/nixos")
+    #(import "${kbi}/")
   ] 
     ++ (if builtins.pathExists ./cachix.nix then [ ./cachix.nix ] else []);
   
@@ -52,7 +55,7 @@ in
   # networking.networkmanager.unmanaged = [
   #   "*" "except:type:wwan" "except:type:gsm"
   # ]; #for not conflicting with wpa_supplicant
-  # programs.nm-applet.enable = true;
+   programs.nm-applet.enable = true;
 
   # Add ZFS support.
   boot.kernelParams = ["zfs.zfs_arc_max=12884901888"];
@@ -94,7 +97,7 @@ in
    services.xserver.layout = "us,ru,az";
    # services.xserver.xkbOptions = "eurosign:e";
    #services.xserver.xkbVariant = "workman,";
-   services.xserver.xkbVariant = "alt-intl,";
+   #services.xserver.xkbVariant = "alt-intl,";
    services.xserver.xkbOptions = "grp:win_space_toggle";
 
 
@@ -376,13 +379,16 @@ programs.zsh.interactiveShellInit = ''
     nox nix-du graphviz nix-index nixpkgs-fmt  
     gnutar
     (callPackage "${comma}/default.nix" {})
+    sqlite
     #(callPackage "${graphanix}/default.nix" {})
     any-nix-shell steam-run steam-run-native direnv nix-bundle
     wget curl vim git rsync htop micro fd tmux lynx ncdu snapper
     trash-cli thefuck aria2 shellcheck fbcat p7zip
     handlr copyq feh rofi vimHugeX #for gvim  
     #haskellPackages.greenclip
-    i3lock-fancy gxkb xxkb
+    i3lock-fancy xxkb
+    #(callPackage "/etc/nixos/kbi/default.nix" {})
+    kbi
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
     oh-my-zsh zsh-history-substring-search zsh-powerlevel10k
