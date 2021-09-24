@@ -34,10 +34,12 @@ bindsym $mod+Return exec alacritty
 # kill focused window
 #bindsym $mod+Shift+q kill 
 bindsym $mod+Shift+q exec "i3-msg kill"
+#bindsym $mod+Control+l exec i3lock -i ~/.config/background-image/nix-wallpaper-stripes-logo.png
+bindsym $mod+Control+l exec i3lock-fancy
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec rofi -show drun -show-icons -modi drun
-bindsym $mod+d exec lxqt-runner
+#bindsym $mod+d exec lxqt-runner
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
