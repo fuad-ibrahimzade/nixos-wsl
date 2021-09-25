@@ -25,7 +25,7 @@ let
     url = "https://github.com/stolyaroleh/grafanix/archive/refs/tags/v0.2.tar.gz";
   };
 
-  kbi = (import "/etc/nixos/kbi");
+  custom-scripts = (import "/etc/nixos/custom-scripts");
 
 in
 {
@@ -33,7 +33,7 @@ in
     ./hardware-configuration.nix
     #./home-manager.nix
     (import "${home-manager}/nixos")
-    #(import "${kbi}/")
+    #(import "${custom-scripts}/")
   ] 
     ++ (if builtins.pathExists ./cachix.nix then [ ./cachix.nix ] else []);
   
@@ -367,6 +367,9 @@ programs.zsh.interactiveShellInit = ''
    #fi
 #
    #source $ZSH/oh-my-zsh.sh
+   #export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.zlib)/lib:$LD_LIBRARY_PATH
+   export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.xorg.libX11)/lib:$LD_LIBRARY_PATH
+
  '';
  programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
 
@@ -387,8 +390,8 @@ programs.zsh.interactiveShellInit = ''
     handlr copyq feh rofi vimHugeX #for gvim  
     #haskellPackages.greenclip
     i3lock-fancy xxkb
-    #(callPackage "/etc/nixos/kbi/default.nix" {})
-    kbi
+    #(callPackage "/etc/nixos/custom-scripts/default.nix" {})
+    custom-scripts
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
     oh-my-zsh zsh-history-substring-search zsh-powerlevel10k
@@ -404,6 +407,7 @@ programs.zsh.interactiveShellInit = ''
     # glibcLocales
     #home-manager
     #python38Full python38Packages.pip python38Packages.poetry
+    # xorg.libX11
   ];
 
  
