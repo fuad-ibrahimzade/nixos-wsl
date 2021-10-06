@@ -7,7 +7,17 @@ let
   #  url = "https://github.com/Shopify/comma.git";
   #  ref = "1.0.0";
   #};
- 
+  my-python-packages = python-packages: with python-packages; [
+    pip 
+    poetry
+    dbus-python 
+    pygobject3 
+    pygobject2
+    # other python packages you want
+  ]; 
+  python-with-my-packages = pkgs.python38Full.withPackages my-python-packages; 
+  mach-nix=(pkgs.callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarball/3.3.0) {}).mach-nix;
+
 in
 {
    
@@ -130,6 +140,9 @@ in
     plugins = with pkgs.vimPlugins; [ 
         #vim-airline
 	vim-colorschemes
+        vim-nix
+        vim-addon-nix
+        YouCompleteMe
     ];
     settings = { ignorecase = true; };
     extraConfig = ''
@@ -162,11 +175,33 @@ in
     '';
   };
 
+    #services.lorri.enable = true;
+    programs.direnv.enable = true;
+    programs.direnv.enableZshIntegration = true;
+    programs.direnv.nix-direnv.enable = true;
+    # optional for nix flakes support
+    programs.direnv.nix-direnv.enableFlakes = true;
+  
+
     programs.vscode.enable = true;
     programs.vscode.package = pkgs.vscode-fhs;
 
     # home.manager.programs.zsh.initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     # home.manager.programs.zsh.    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    programs.zsh.profileExtra = ''
+      if [ -n "$GTK_MODULES" ]
+      then
+        GTK_MODULES="$GTK_MODULES:unity-gtk-module"
+      else
+        GTK_MODULES="unity-gtk-module"
+      fi
+      
+      if [ -z "$UBUNTU_MENUPROXY" ]
+      then
+        UBUNTU_MENUPROXY=1
+      fi
+    '';
+
 
     programs.chromium = {
       enable = true;
@@ -184,15 +219,28 @@ in
 
     home.packages = [
       # pkgs.glibcLocales
-       # fishPlugins.foreign-env
+       # pkgs.fishPlugins.foreign-env
        pkgs.home-manager
        pkgs.qutebrowser
-       pkgs.python38Full pkgs.python38Packages.pip pkgs.python38Packages.poetry
+       pkgs.python38Full mach-nix
+       pkgs.python38Packages.pip pkgs.python38Packages.poetry
+       #python-with-my-packages
        pkgs.dotnet-sdk_5
        #pkgs.dotnet-sdk_3
        #pkgs.dotnet-sdk
        pkgs.nodejs
-       #pkgs.comma
+
+       #python38Packages.dbus-python python38Packages.pygobject3 python38Packages.pygobject2
+       pkgs.libdbusmenu
+       pkgs.libdbusmenu_qt
+       pkgs.libsForQt5.libdbusmenu
+       pkgs.libsForQt5.full
+       #pkgs.libdbusmenu-gtk3
+       #pkgs.libdbusmenu-gtk2
+
+       pkgs.libsForQt5.qt5.qttools
+       pkgs.dfeet
+       pkgs.bustle
     ];
 }
 

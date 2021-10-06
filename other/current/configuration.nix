@@ -308,6 +308,8 @@ programs.zsh.interactiveShellInit = ''
    #setopt completealiases
 
   #alias tmux="TERM=screen-256color-bce tmux"
+  alias matchNixShell="nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarball/3.3.0) {}).mach-nix'
+"
 
   #if [[ $- == *i* && ! -v TMUX ]]; then
   if [[ -o interactive && ! -v TMUX ]]; then 
@@ -368,7 +370,7 @@ programs.zsh.interactiveShellInit = ''
 #
    #source $ZSH/oh-my-zsh.sh
    #export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.zlib)/lib:$LD_LIBRARY_PATH
-   export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.xorg.libX11)/lib:$LD_LIBRARY_PATH
+   export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.xorg.libX11)/lib:$(nix eval --raw nixpkgs.libsForQt5.libdbusmenu)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk3)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk2)/lib:$(nix eval --raw nixpkgs.libsForQt5.full)/lib:$LD_LIBRARY_PATH
 
  '';
  programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
@@ -377,6 +379,7 @@ programs.zsh.interactiveShellInit = ''
   security.pam.services.lightdm.enableGnomeKeyring = true;
   programs.ssh.startAgent = true;
   programs.command-not-found.enable = true;
+
 
   environment.systemPackages = with pkgs; [
     nox nix-du graphviz nix-index nixpkgs-fmt  
