@@ -1,0 +1,17 @@
+use-cache-dir-for-backups = true
+days-to-scan = 2
+max-archive-unpacked-size-mb = 200
+snapshot-name-template = "zfs-snap-diff-%FT%H:%M"
+compare-method = "auto"
+diff-context-size = 5
+
+[webserver]
+  listen-ip = "127.0.0.1"
+  listen-port = 12345
+  use-tls = false
+  cert-file = ""
+  key-file = ""
+
+[zfs]
+  use-sudo = false
+  mount-snapshots = false
