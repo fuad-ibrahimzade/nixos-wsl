@@ -26,6 +26,8 @@ let
   };
 
   custom-scripts = (import "/etc/nixos/custom-scripts");
+  #i3-hud-menu = (pkgs.callPackage "/etc/nixos/i3-hud-menu/default.nix" {});
+  i3-hud-menu = (import "/etc/nixos/i3-hud-menu");
 
 in
 {
@@ -109,6 +111,12 @@ in
   # services.xserver.desktopManager.lumina.enable = true;
   services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
+  #services.xserver.desktopManager.xfce = {
+  #  enable = true;
+  #  noDesktop = true;
+  #  enableXfwm = false;
+  #};
+
   services.compton = {
     enable = true;
     shadow = true;
@@ -227,6 +235,7 @@ in
     #'';
  
   services.xserver.displayManager.defaultSession = "lxqt+i3";
+  #services.xserver.displayManager.defaultSession = "xfce+i3";
   #services.xserver.videoDrivers = [ "modesetting" ];
   #services.xserver.useGlamor = true;
 
@@ -240,7 +249,7 @@ in
   services.xserver.displayManager.lightdm = {
     enable = true;
     background = "/home/qaqulya/.config/background-image/nixos.png";
- };
+  };
   #services.xserver.displayManager.defaultSession = "none+notion";
   
   #services.xserver.windowManager.notion.enable = true;
@@ -288,6 +297,8 @@ in
     shellAliases = {
       ll = "ls -l";
       update = "sudo nixos-rebuild switch";
+      rm = "echo Use 'del', or the full path i.e. '/bin/rm'";
+      rmTrash= "trash-put";
     };
   };
 
@@ -308,8 +319,15 @@ programs.zsh.interactiveShellInit = ''
    #setopt completealiases
 
   #alias tmux="TERM=screen-256color-bce tmux"
-  alias matchNixShell="nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarball/3.3.0) {}).mach-nix'
-"
+  #alias machNixShell="nix-shell -p '(callPackage (fetchTarball https://github.com/DavHau/mach-nix/tarball/3.3.0) {}).mach-nix'"
+  machNixShell() {
+    packages="$@"
+    mach-nix env ./env -r "$packages";
+    nix-shell ./env
+  }
+  removeMachNixShell() {
+    rm ./env
+  }
 
   #if [[ $- == *i* && ! -v TMUX ]]; then
   if [[ -o interactive && ! -v TMUX ]]; then 
@@ -370,10 +388,17 @@ programs.zsh.interactiveShellInit = ''
 #
    #source $ZSH/oh-my-zsh.sh
    #export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.zlib)/lib:$LD_LIBRARY_PATH
-   export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.xorg.libX11)/lib:$(nix eval --raw nixpkgs.libsForQt5.libdbusmenu)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk3)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk2)/lib:$(nix eval --raw nixpkgs.libsForQt5.full)/lib:$LD_LIBRARY_PATH
+   #export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.xorg.libX11)/lib:$(nix eval --raw nixpkgs.libsForQt5.libdbusmenu)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk3)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk2)/lib:$(nix eval --raw nixpkgs.libsForQt5.full)/lib:$LD_LIBRARY_PATH
+  NIX_LINK=/home/qaqulya/.nix-profile
+  export LD_LIBRARY_PATH="$NIX_LINK"/lib:/nix/var/nix/profiles/system/sw/lib:$LD_LIBRARY_PATH
 
  '';
- programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+ programs.zsh.promptInit = ''
+   source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+   any-nix-shell zsh --info-right | source /dev/stdin
+   #export LD_LIBRARY_PATH=$(nix eval --raw nixpkgs.xorg.libX11)/lib:$(nix eval --raw nixpkgs.libsForQt5.libdbusmenu)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk3)/lib:$(nix eval --raw nixpkgs.libdbusmenu-gtk2)/lib:$(nix eval --raw nixpkgs.libsForQt5.full)/lib:$LD_LIBRARY_PATH
+   eval "$(direnv hook zsh)"
+  '';
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
@@ -394,7 +419,9 @@ programs.zsh.interactiveShellInit = ''
     #haskellPackages.greenclip
     i3lock-fancy xxkb
     #(callPackage "/etc/nixos/custom-scripts/default.nix" {})
-    custom-scripts
+    custom-scripts 
+    i3-hud-menu
+
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
     oh-my-zsh zsh-history-substring-search zsh-powerlevel10k
@@ -410,7 +437,7 @@ programs.zsh.interactiveShellInit = ''
     # glibcLocales
     #home-manager
     #python38Full python38Packages.pip python38Packages.poetry
-    # xorg.libX11
+    xorg.libX11
   ];
 
  

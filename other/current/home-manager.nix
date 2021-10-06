@@ -222,7 +222,8 @@ in
        # pkgs.fishPlugins.foreign-env
        pkgs.home-manager
        pkgs.qutebrowser
-       pkgs.python38Full mach-nix
+       pkgs.calibre
+       pkgs.python38Full mach-nix 
        pkgs.python38Packages.pip pkgs.python38Packages.poetry
        #python-with-my-packages
        pkgs.dotnet-sdk_5

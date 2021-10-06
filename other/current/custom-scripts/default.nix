@@ -1,6 +1,15 @@
 let
   pkgs = import <nixpkgs> {};
   lib = pkgs.stdenv.lib;
+  customPython = (pkgs.python38Full.buildEnv.override {
+    extraLibs = with pkgs.python38Packages; [
+      dbus-python
+      dbus-next
+      pycairo
+      pygobject3
+    ];
+  });
+
 #with import <nixpkgs> {};
 in
 pkgs.stdenv.mkDerivation {  
@@ -23,6 +32,28 @@ pkgs.stdenv.mkDerivation {
     dfeet
     bustle
   ];
+  nativeBuildInputs = with pkgs; [
+    #customPython
+    xorg.libX11
+    cairo
+    dbus
+    libdbusmenu
+    libdbusmenu_qt
+    libdbusmenu-gtk3
+    gtk3
+    dbus-glib
+    gobject-introspection
+  ];
+  runtimeDependencies = with pkgs; [
+    dbus
+    #customPython
+  ];
+  #propagatedNativeBuildInputs = [
+  #  customPython
+  #];
+  #propagatedBuildInputs = [
+  #  customPython
+  #];
   shellHook = ''
     #export QT_SELECT="qt4"
     #export QTTOOLDIR="${pkgs.qt4}/bin"
