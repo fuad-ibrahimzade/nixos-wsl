@@ -28,6 +28,11 @@ let
   custom-scripts = (import "/etc/nixos/custom-scripts");
   #i3-hud-menu = (pkgs.callPackage "/etc/nixos/i3-hud-menu/default.nix" {});
   i3-hud-menu = (import "/etc/nixos/i3-hud-menu");
+  #nixpkgs2009 = import
+  #  (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/20.09)
+  #  # reuse the current configuration
+  #  { config = config.nixpkgs.config; };
+  xfce-with-appmenu = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/override-xfce4-panel.nix" {});
 
 in
 {
@@ -109,13 +114,13 @@ in
   # Enable Lumina desktop Environment
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.desktopManager.lumina.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
-  #services.xserver.desktopManager.xfce = {
-  #  enable = true;
-  #  noDesktop = true;
-  #  enableXfwm = false;
-  #};
+  services.xserver.desktopManager.xfce = {
+    enable = true;
+    #noDesktop = true;
+    #enableXfwm = false;
+  };
 
   services.compton = {
     enable = true;
@@ -234,8 +239,18 @@ in
        #''}"
     #'';
  
-  services.xserver.displayManager.defaultSession = "lxqt+i3";
-  #services.xserver.displayManager.defaultSession = "xfce+i3";
+  #services.xserver.displayManager.defaultSession = "lxqt+i3";
+  services.xserver.displayManager.defaultSession = "xfce";
+  
+  #services.xserver.displayManager.gdm.enable = true;
+  #services.xserver.desktopManager.gnome.enable = true;
+  #environment.gnome.excludePackages = [
+  #  pkgs.mbrola
+  #  pkgs.espeak-ng
+  #  pkgs.orca
+  #  pkgs.speechd
+  #];
+  
   #services.xserver.videoDrivers = [ "modesetting" ];
   #services.xserver.useGlamor = true;
 
@@ -248,15 +263,16 @@ in
 
   services.xserver.displayManager.lightdm = {
     enable = true;
-    background = "/home/qaqulya/.config/background-image/nixos.png";
+    #background = "/home/qaqulya/.config/background-image/nixos.png";
+    background = "/home/qaqulya/.config/background-image/nix-wallpaper-stripes-logo.png";
   };
   #services.xserver.displayManager.defaultSession = "none+notion";
   
   #services.xserver.windowManager.notion.enable = true;
   services.xserver.desktopManager.xterm.enable = false;
   
-  services.xserver.windowManager.i3.enable = true;
-  services.xserver.windowManager.i3.package = pkgs.i3-gaps;
+  #services.xserver.windowManager.i3.enable = true;
+  #services.xserver.windowManager.i3.package = pkgs.i3-gaps;
   programs.dconf.enable = true;
 
   # services.xserver.displayManager.xpra = true
@@ -419,8 +435,15 @@ programs.zsh.interactiveShellInit = ''
     #haskellPackages.greenclip
     i3lock-fancy xxkb
     #(callPackage "/etc/nixos/custom-scripts/default.nix" {})
-    custom-scripts 
-    i3-hud-menu
+
+    #region custom-scripts
+    custom-scripts xfce-with-appmenu 
+    # plotinus
+    i3-gaps i3-hud-menu
+    #nixpkgs2009.xfce.xfce4-vala-panel-appmenu-plugin
+    #endregion
+
+    conky
 
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
@@ -438,10 +461,27 @@ programs.zsh.interactiveShellInit = ''
     #home-manager
     #python38Full python38Packages.pip python38Packages.poetry
     xorg.libX11
+    #indicator-application-gtk2 indicator-application-gtk3
+    #gnomeExtensions.appindicator
+    darling-dmg
+    libunity
+    apt-offline
   ];
 
+  services.dbus.packages = [ pkgs.gnome.dconf ];
+  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
  
-  environment.variables = { EDITOR = "vim"; };
+  environment.variables = { 
+    EDITOR = "vim"; 
+
+    #region plotinus related
+    # XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
+    # #XDG_DATA_DIRS = "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
+    # #GTK3_MODULES = "${pkgs.plotinus}/lib";
+    # GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
+    # LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${pkgs.plotinus}/lib";
+    #endregion
+  };
 
   # Home Manager initial details
   #home-manager.environment = config.environment;

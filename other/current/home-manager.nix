@@ -188,19 +188,19 @@ in
 
     # home.manager.programs.zsh.initExtra = "[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh";
     # home.manager.programs.zsh.    initExtraBeforeCompInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-    programs.zsh.profileExtra = ''
-      if [ -n "$GTK_MODULES" ]
-      then
-        GTK_MODULES="$GTK_MODULES:unity-gtk-module"
-      else
-        GTK_MODULES="unity-gtk-module"
-      fi
-      
-      if [ -z "$UBUNTU_MENUPROXY" ]
-      then
-        UBUNTU_MENUPROXY=1
-      fi
-    '';
+    #programs.zsh.profileExtra = ''
+      #if [ -n "$GTK_MODULES" ]
+      #then
+        #GTK_MODULES="$GTK_MODULES:unity-gtk-module"
+      #else
+        #GTK_MODULES="unity-gtk-module"
+      #fi
+      #
+      #if [ -z "$UBUNTU_MENUPROXY" ]
+      #then
+        #UBUNTU_MENUPROXY=1
+      #fi
+    #'';
 
 
     programs.chromium = {
