@@ -40,8 +40,10 @@ bindsym $mod+Control+l exec i3lock-fancy
 # start dmenu (a program launcher)
 #bindsym $mod+d exec rofi -show drun -show-icons -modi drun
 #bindsym $mod+d exec lxqt-runner
+bindsym $mod+d exec i3-msg '[class="Xfce4-appfinder"] focus' & zsh -c "(($(i3-msg -t get_tree | grep -v \"xfce4-appfinder\" | wc -m))) && xfce4-appfinder -c"
+
 #bindsym $mod+q exec i3-dmenu-desktop --dmenu=qmenu_hud
-bindsym $mod+q exec zsh -c "qmenu_hud"
+#bindsym $mod+q exec zsh -c "qmenu_hud"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -160,7 +162,8 @@ gaps inner 15
 #exec --no-startup-id tint2 --disable-wm-check /home/user/.config/tint2/tint2rc
 exec --no-startup-id tint2 /home/user/.config/tint2/tint2rc
 #bindsym $mod+Shift+p exec rofi -show power-menu -modi power-menu:rofi-power-menu
-bindsym $mod+Shift+p exec lxqt-leave
+#bindsym $mod+Shift+p exec lxqt-leave
+bindsym $mod+Shift+p exec xfce4-session-logout
 bindsym $mod+z exec morc_menu
 bindsym $mod+Shift+z exec jgmenu_run
 bindsym Print exec flameshot gui
@@ -173,6 +176,8 @@ bindsym $mod+m scratchpad show, floating disable
 #exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/archlinux/xx14sh3bx3q41.png
 exec_always --no-startup-id feh --bg-fill ~/.config/background-image/nixos.png
 exec --no-startup-id hsetroot -solid '#000000'
-#exec --no-startup-d nwgbar -v -wm i3
+exec --no-startup-d nwgbar -v -wm i3
 exec i3-appmenu-service
 bindsym $mod+x exec i3-hud-menu
+for_window [title="Application Finder"] floating enable
+for_window [title="Application Finder"] resize set width 600 px
