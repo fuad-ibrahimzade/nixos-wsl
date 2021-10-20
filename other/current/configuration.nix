@@ -32,7 +32,10 @@ let
   #  (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/20.09)
   #  # reuse the current configuration
   #  { config = config.nixpkgs.config; };
-  xfce-with-appmenu = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/override-xfce4-panel.nix" {});
+  #xfce-with-appmenu = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/override-xfce4-panel.nix" {});
+  appmenu-registrar = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-registrar.nix" {});
+  appmenu-gtk-module = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-gtk-arch.nix" {});
+  vala-appmenu-xfce = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/vala-appmenu-xfce-arch.nix" {});
 
 in
 {
@@ -41,6 +44,7 @@ in
     #./home-manager.nix
     (import "${home-manager}/nixos")
     #(import "${custom-scripts}/")
+    /etc/nixos/custom-scripts/virtualisation-unstable.nix
   ] 
     ++ (if builtins.pathExists ./cachix.nix then [ ./cachix.nix ] else []);
   
@@ -420,6 +424,11 @@ programs.zsh.interactiveShellInit = ''
   security.pam.services.lightdm.enableGnomeKeyring = true;
   programs.ssh.startAgent = true;
   programs.command-not-found.enable = true;
+  
+  environment.pathsToLink = [ "/libexec" ];
+
+  services.flatpak.enable = true;
+  xdg.portal.enable = true;
 
 
   environment.systemPackages = with pkgs; [
@@ -428,34 +437,40 @@ programs.zsh.interactiveShellInit = ''
     (callPackage "${comma}/default.nix" {})
     sqlite
     #(callPackage "${graphanix}/default.nix" {})
-    any-nix-shell steam-run steam-run-native direnv nix-bundle
+    any-nix-shell steam-run steam-run-native direnv nix-bundle nix-template
     wget curl vim git rsync htop micro fd tmux lynx ncdu snapper
-    trash-cli thefuck aria2 shellcheck fbcat p7zip
+    trash-cli thefuck aria2 shellcheck fbcat p7zip trickle
     handlr copyq feh rofi vimHugeX #for gvim  
     #haskellPackages.greenclip
-    i3lock-fancy xxkb
+    i3lock-fancy xxkb i3-gaps at-spi2-atk conky
     #(callPackage "/etc/nixos/custom-scripts/default.nix" {})
+    custom-scripts 
+    keynav
 
-    #region custom-scripts
-    custom-scripts xfce-with-appmenu 
-    # plotinus
-    i3-gaps i3-hud-menu
+    #appmenu-registrar appmenu-gtk-module
+    #vala-appmenu-xfce
     #nixpkgs2009.xfce.xfce4-vala-panel-appmenu-plugin
-    #endregion
+    indicator-application-gtk2
+    indicator-application-gtk3
+    #xfce-with-appmenu 
+    # plotinus
+    # i3-hud-menu
 
-    conky
+    
 
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
     oh-my-zsh zsh-history-substring-search zsh-powerlevel10k
     #dbus
-    #libdbusmenu
-    #libdbusmenu_qt
-    #libdbusmenu-gtk3
-    #libdbusmenu_gtk2
-    #libsForQt5.libdbusmenu
+    libdbusmenu
+    libdbusmenu_qt
+    libdbusmenu-gtk3
+    libdbusmenu-gtk2
+    libsForQt5.libdbusmenu
     #libsForQt5.full
-    #cmake dmenu
+
+    #cmake 
+    dmenu
     # fishPlugins.foreign-env
     # glibcLocales
     #home-manager
@@ -464,22 +479,36 @@ programs.zsh.interactiveShellInit = ''
     #indicator-application-gtk2 indicator-application-gtk3
     #gnomeExtensions.appindicator
     darling-dmg
+    wineWowPackages.stable
     libunity
     apt-offline
   ];
 
-  services.dbus.packages = [ pkgs.gnome.dconf ];
+  services.dbus.packages = [ 
+    pkgs.gnome.dconf 
+    #appmenu-registrar 
+    pkgs.at-spi2-atk 
+  ];
+  #systemd.packages = [ appmenu-gtk-module ];
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+  services.bamf.enable = true;
  
   environment.variables = { 
     EDITOR = "vim"; 
 
     #region plotinus related
     # XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
-    # #XDG_DATA_DIRS = "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
-    # #GTK3_MODULES = "${pkgs.plotinus}/lib";
-    # GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
-    # LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${pkgs.plotinus}/lib";
+    #XDG_DATA_DIRS = "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
+    #GTK3_MODULES = "${pkgs.plotinus}/lib";
+    #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
+    #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
+    #LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${pkgs.plotinus}/lib:${appmenu-registrar}/lib:${appmenu-gtk-module}/lib";
+    
+    # GTK2_MODULES="$GTK_MODULES:appmenu-gtk-module";
+    #GTK_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-3.0/modules/libappmenu-gtk-module.so";
+    #GTK3_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-3.0/modules/libappmenu-gtk-module.so";
+    #GTK2_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-2.0/modules/libappmenu-gtk-module.so";
+    # UBUNTU_MENUPROXY="1";
     #endregion
   };
 
