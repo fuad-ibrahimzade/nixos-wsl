@@ -33,9 +33,9 @@ let
   #  # reuse the current configuration
   #  { config = config.nixpkgs.config; };
   #xfce-with-appmenu = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/override-xfce4-panel.nix" {});
-  appmenu-registrar = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-registrar.nix" {});
-  appmenu-gtk-module = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-gtk-arch.nix" {});
-  vala-appmenu-xfce = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/vala-appmenu-xfce-arch.nix" {});
+  #appmenu-registrar = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-registrar.nix" {});
+  #appmenu-gtk-module = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-gtk-arch.nix" {});
+  #vala-appmenu-xfce = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/vala-appmenu-xfce-arch.nix" {});
 
 in
 {
@@ -134,6 +134,10 @@ in
     # backend = "glx";
     # vSync = "opengl-swc";
     # paintOnOverlay = true;
+    opacityRules = [ 
+      "100:name = 'jgmenu'"
+      "100:class_g = 'dmenu'"
+    ];
   };
 
   systemd.user.services."urxvtd" = {
@@ -253,7 +257,11 @@ in
   #  pkgs.espeak-ng
   #  pkgs.orca
   #  pkgs.speechd
+    #pkgs.xfce.xfdesktop
   #];
+
+
+
   
   #services.xserver.videoDrivers = [ "modesetting" ];
   #services.xserver.useGlamor = true;
@@ -281,6 +289,12 @@ in
 
   # services.xserver.displayManager.xpra = true
   # services.xserver.displayManager.startx.enable = true;
+
+  #virtualisation.libvirtd.enable = true;
+  #virtualisation.virtualbox.host.enable = true;
+  #virtualisation.virtualbox.host.enableExtensionPack = true;
+  #users.extraGroups.vboxusers.members = [ "qaqulya" ];
+
 
   # ZFS services
   services.zfs.autoSnapshot.enable = true;
@@ -439,24 +453,29 @@ programs.zsh.interactiveShellInit = ''
     #(callPackage "${graphanix}/default.nix" {})
     any-nix-shell steam-run steam-run-native direnv nix-bundle nix-template
     wget curl vim git rsync htop micro fd tmux lynx ncdu snapper
-    trash-cli thefuck aria2 shellcheck fbcat p7zip trickle
+    trash-cli thefuck aria2 shellcheck fbcat p7zip trickle youtube-dl
     handlr copyq feh rofi vimHugeX #for gvim  
+    #virt-manager virtualbox
+    uget uget-integrator
+    
     #haskellPackages.greenclip
-    i3lock-fancy xxkb i3-gaps at-spi2-atk conky
+    i3lock-fancy xxkb
     #(callPackage "/etc/nixos/custom-scripts/default.nix" {})
     custom-scripts 
+    #xfce-with-appmenu 
+    #plotinus
+    i3-gaps i3-hud-menu
     keynav
+    at-spi2-atk
+    xfce.xfce4-i3-workspaces-plugin
 
     #appmenu-registrar appmenu-gtk-module
     #vala-appmenu-xfce
-    #nixpkgs2009.xfce.xfce4-vala-panel-appmenu-plugin
+    #xfce.xfce4-battery-plugin
     indicator-application-gtk2
     indicator-application-gtk3
-    #xfce-with-appmenu 
-    # plotinus
-    # i3-hud-menu
-
-    
+    #nixpkgs2009.xfce.xfce4-vala-panel-appmenu-plugin
+    conky
 
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
@@ -468,9 +487,14 @@ programs.zsh.interactiveShellInit = ''
     libdbusmenu-gtk2
     libsForQt5.libdbusmenu
     #libsForQt5.full
-
     #cmake 
-    dmenu
+    dmenu 
+    #haskellPackages.dmenu
+    #haskellPackages.dmenu-pkill 
+    #haskellPackages.dmenu-search 
+    #haskellPackages.yeganesh 
+    clipmenu
+    jgmenu
     # fishPlugins.foreign-env
     # glibcLocales
     #home-manager
@@ -479,7 +503,7 @@ programs.zsh.interactiveShellInit = ''
     #indicator-application-gtk2 indicator-application-gtk3
     #gnomeExtensions.appindicator
     darling-dmg
-    wineWowPackages.stable
+    wineWowPackages.stable appimage-run
     libunity
     apt-offline
   ];
@@ -495,21 +519,18 @@ programs.zsh.interactiveShellInit = ''
  
   environment.variables = { 
     EDITOR = "vim"; 
-
-    #region plotinus related
-    # XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
+    #XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
     #XDG_DATA_DIRS = "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
     #GTK3_MODULES = "${pkgs.plotinus}/lib";
     #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
     #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
     #LD_LIBRARY_PATH = "$LD_LIBRARY_PATH:${pkgs.plotinus}/lib:${appmenu-registrar}/lib:${appmenu-gtk-module}/lib";
-    
-    # GTK2_MODULES="$GTK_MODULES:appmenu-gtk-module";
+    #GTK2_MODULES="$GTK_MODULES:appmenu-gtk-module";
     #GTK_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-3.0/modules/libappmenu-gtk-module.so";
     #GTK3_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-3.0/modules/libappmenu-gtk-module.so";
     #GTK2_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-2.0/modules/libappmenu-gtk-module.so";
-    # UBUNTU_MENUPROXY="1";
-    #endregion
+    #UBUNTU_MENUPROXY="1";
+    UGET_COMMAND = "${pkgs.uget}/bin/uget-gtk";
   };
 
   # Home Manager initial details
@@ -579,7 +600,7 @@ programs.zsh.interactiveShellInit = ''
     isNormalUser = true;
     createHome = true;
     home = "/home/qaqulya";
-    extraGroups = [ "wheel" "networkmanager" "audio" ];
+    extraGroups = [ "wheel" "networkmanager" "audio" "libvirtd" ];
     # shell = pkgs.fish;
   };
   # users.users.root.hashedPassword = "!";

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+appimage-run ./Motrix-1.6.11.AppImage

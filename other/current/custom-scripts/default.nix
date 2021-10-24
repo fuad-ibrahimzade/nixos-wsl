@@ -18,7 +18,11 @@ pkgs.stdenv.mkDerivation {
   phases = ["installPhase"];
   installPhase = ''
     mkdir -p $out/bin; cp -av $src/. $out/bin
-    
+    #uget-integration
+    #mkdir -p /etc/chromium/native-messaging-hosts
+    #cp "${pkgs.uget-integrator}/etc/chromium/native-messaging-hosts/com.ugetdm.chrome.json" /etc/chromium/native-messaging-hosts/com.ugetdm.chrome.json
+  
+
   '';
   buildInputs = with pkgs; [
     xorg.libX11 # for qmenu
@@ -47,6 +51,8 @@ pkgs.stdenv.mkDerivation {
   runtimeDependencies = with pkgs; [
     dbus
     #customPython
+    #for motrix
+    appimage-run
   ];
   #propagatedNativeBuildInputs = [
   #  customPython

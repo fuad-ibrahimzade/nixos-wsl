@@ -7,6 +7,10 @@ let
   #  url = "https://github.com/Shopify/comma.git";
   #  ref = "1.0.0";
   #};
+  #nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+  #  inherit pkgs;
+  #};
+
   my-python-packages = python-packages: with python-packages; [
     pip 
     poetry
@@ -217,7 +221,8 @@ in
         "ldgfbffkinooeloadekpmfoklnobpien"
         "nmhnlemdhjjebiklhbjmpkiekgjjbnfc"
         "dojjmigcfgjcjakkdhmnkcjajbjcjnja"
-        "nbcojefnccbanplpoffopkoepjmhgdgh"
+        "efjgjleilhflffpbnkaofpmdnajdpepi"
+        "elicpjhcidhpjomhibiffojpinpmmpil"
       ]; 
     };
 
@@ -228,6 +233,7 @@ in
        # pkgs.fishPlugins.foreign-env
        pkgs.home-manager
        pkgs.qutebrowser
+       #nur.repos.wolfangaukang.vdhcoapp
        pkgs.calibre pkgs.qalculate-gtk
        pkgs.python38Full mach-nix 
        pkgs.python38Packages.pip pkgs.python38Packages.poetry
