@@ -36,7 +36,11 @@ let
   #appmenu-registrar = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-registrar.nix" {});
   #appmenu-gtk-module = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/appmenu-gtk-arch.nix" {});
   #vala-appmenu-xfce = (pkgs.callPackage "/etc/nixos/xfce4-panel-with-appmenu/appmenu-related/vala-appmenu-xfce-arch.nix" {});
-
+  #appmenu-gtk-module3 = (pkgs.callPackage "/etc/nixos/custom-scripts/appmenu-gtk-module3.nix" {});
+  plasma-i3-session-package = (pkgs.callPackage "/etc/nixos/custom-scripts/plasma-i3.nix" {});
+  plasma-hud = (pkgs.callPackage "/etc/nixos/plasma-hud/default.nix" {});
+  motrix = (pkgs.callPackage "/etc/nixos/motrix/default.nix" {});
+    
 in
 {
   imports = [ # Include the results of the hardware scan.
@@ -120,25 +124,33 @@ in
   # services.xserver.desktopManager.lumina.enable = true;
   #services.xserver.desktopManager.lxqt.enable = true;
   #services.xserver.desktopManager.mate.enable = true;
-  services.xserver.desktopManager.xfce = {
-    enable = true;
-    #noDesktop = true;
-    #enableXfwm = false;
-  };
+  #services.xserver.desktopManager.xfce = {
+  #  enable = true;
+  #  #noDesktop = true;
+  #  #enableXfwm = false;
+  #};
+  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+  #services.xserver.displayManager.defaultSession = "plasma5";
+  services.xserver.displayManager.defaultSession = "plasma-i3";
+  services.xserver.displayManager.sessionPackages = [ plasma-i3-session-package ];
 
-  services.compton = {
-    enable = true;
-    shadow = true;
-    activeOpacity = 0.9;
-    inactiveOpacity = 0.6;
-    # backend = "glx";
-    # vSync = "opengl-swc";
-    # paintOnOverlay = true;
-    opacityRules = [ 
-      "100:name = 'jgmenu'"
-      "100:class_g = 'dmenu'"
-    ];
-  };
+
+
+
+  #services.compton = {
+    #enable = true;
+    #shadow = true;
+    #activeOpacity = 0.9;
+    #inactiveOpacity = 0.6;
+    ## backend = "glx";
+    ## vSync = "opengl-swc";
+    ## paintOnOverlay = true;
+    #opacityRules = [ 
+      #"100:name = 'jgmenu'"
+      #"100:class_g = 'dmenu'"
+    #];
+  #};
 
   systemd.user.services."urxvtd" = {
     enable = true;
@@ -248,7 +260,7 @@ in
     #'';
  
   #services.xserver.displayManager.defaultSession = "lxqt+i3";
-  services.xserver.displayManager.defaultSession = "xfce";
+  #services.xserver.displayManager.defaultSession = "xfce";
   
   #services.xserver.displayManager.gdm.enable = true;
   #services.xserver.desktopManager.gnome.enable = true;
@@ -273,18 +285,21 @@ in
   #'';
   # services.xserver.windowManager.exwm.enable = true
 
-  services.xserver.displayManager.lightdm = {
-    enable = true;
-    #background = "/home/qaqulya/.config/background-image/nixos.png";
-    background = "/home/qaqulya/.config/background-image/nix-wallpaper-stripes-logo.png";
-  };
+  #services.xserver.displayManager.lightdm = {
+  #  enable = true;
+  #  #background = "/home/qaqulya/.config/background-image/nixos.png";
+  #  background = "/home/qaqulya/.config/background-image/nix-wallpaper-stripes-logo.png";
+  #};
+  #services.xserver.displayManager.lightdm.greeters.gtk.enable= true;
+  #services.xserver.displayManager.sddm.enable = true;
+
   #services.xserver.displayManager.defaultSession = "none+notion";
   
   #services.xserver.windowManager.notion.enable = true;
   services.xserver.desktopManager.xterm.enable = false;
   
-  #services.xserver.windowManager.i3.enable = true;
-  #services.xserver.windowManager.i3.package = pkgs.i3-gaps;
+  services.xserver.windowManager.i3.enable = true;
+  services.xserver.windowManager.i3.package = pkgs.i3-gaps;
   programs.dconf.enable = true;
 
   # services.xserver.displayManager.xpra = true
@@ -426,6 +441,8 @@ programs.zsh.interactiveShellInit = ''
   NIX_LINK=/home/qaqulya/.nix-profile
   export LD_LIBRARY_PATH="$NIX_LINK"/lib:/nix/var/nix/profiles/system/sw/lib:$LD_LIBRARY_PATH
 
+  export KWIN_TRIPLE_BUFFER=1
+ 
  '';
  programs.zsh.promptInit = ''
    source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
@@ -435,7 +452,7 @@ programs.zsh.interactiveShellInit = ''
   '';
 
   services.gnome.gnome-keyring.enable = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
+  #security.pam.services.lightdm.enableGnomeKeyring = true;
   programs.ssh.startAgent = true;
   programs.command-not-found.enable = true;
   
@@ -444,6 +461,7 @@ programs.zsh.interactiveShellInit = ''
   services.flatpak.enable = true;
   xdg.portal.enable = true;
 
+  programs.partition-manager.enable = true;
 
   environment.systemPackages = with pkgs; [
     nox nix-du graphviz nix-index nixpkgs-fmt  
@@ -456,18 +474,24 @@ programs.zsh.interactiveShellInit = ''
     trash-cli thefuck aria2 shellcheck fbcat p7zip trickle youtube-dl
     handlr copyq feh rofi vimHugeX #for gvim  
     #virt-manager virtualbox
-    uget uget-integrator
+    browsh firefox-bin
+    w3m links2
+    #uget uget-integrator
+    motrix
     
     #haskellPackages.greenclip
     i3lock-fancy xxkb
     #(callPackage "/etc/nixos/custom-scripts/default.nix" {})
     custom-scripts 
     #xfce-with-appmenu 
-    #plotinus
+    plotinus
     i3-gaps i3-hud-menu
+    plasma-hud
     keynav
     at-spi2-atk
-    xfce.xfce4-i3-workspaces-plugin
+    #xfce.xfce4-i3-workspaces-plugin
+    kde-gtk-config
+    #appmenu-gtk-module3
 
     #appmenu-registrar appmenu-gtk-module
     #vala-appmenu-xfce
@@ -475,7 +499,7 @@ programs.zsh.interactiveShellInit = ''
     indicator-application-gtk2
     indicator-application-gtk3
     #nixpkgs2009.xfce.xfce4-vala-panel-appmenu-plugin
-    conky
+    #conky
 
     libsForQt5.qtstyleplugin-kvantum flat-remix-gtk flat-remix-icon-theme glib
     alacritty kitty st rxvt_unicode
@@ -487,6 +511,9 @@ programs.zsh.interactiveShellInit = ''
     libdbusmenu-gtk2
     libsForQt5.libdbusmenu
     #libsForQt5.full
+    libsForQt5.krunner
+    libsForQt5.discover
+    libsForQt5.plasma-browser-integration
     #cmake 
     dmenu 
     #haskellPackages.dmenu
@@ -508,19 +535,30 @@ programs.zsh.interactiveShellInit = ''
     apt-offline
   ];
 
+  nix = {
+      trustedUsers = [ "root" "qaqulya" ];
+      #package = pkgs.nixFlakes;
+      #extraOptions = lib.optionalString (config.nix.package == pkgs.nixFlakes)
+      #  "experimental-features = nix-command flakes";
+   };
+
   services.dbus.packages = [ 
     pkgs.gnome.dconf 
-    #appmenu-registrar 
-    pkgs.at-spi2-atk 
+  #  #appmenu-registrar 
+  #  pkgs.at-spi2-atk 
   ];
-  #systemd.packages = [ appmenu-gtk-module ];
+  #systemd.packages = [ 
+    #appmenu-gtk-module 
+    #appmenu-gtk-module3
+  #];
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
   services.bamf.enable = true;
  
   environment.variables = { 
     EDITOR = "vim"; 
     #XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
-    #XDG_DATA_DIRS = "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
+    #XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${appmenu-gtk-module3}/share/gsettings-schemas/appmenu-gtk3-module-0.7.6/glib-2.0/schemas";
+    XDG_DATA_DIRS = lib.mkOverride 50 "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
     #GTK3_MODULES = "${pkgs.plotinus}/lib";
     #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
     #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
@@ -530,7 +568,7 @@ programs.zsh.interactiveShellInit = ''
     #GTK3_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-3.0/modules/libappmenu-gtk-module.so";
     #GTK2_MODULES="$GTK_MODULES:${appmenu-gtk-module}/lib/gtk-2.0/modules/libappmenu-gtk-module.so";
     #UBUNTU_MENUPROXY="1";
-    UGET_COMMAND = "${pkgs.uget}/bin/uget-gtk";
+    #UGET_COMMAND = "${pkgs.uget}/bin/uget-gtk";
   };
 
   # Home Manager initial details

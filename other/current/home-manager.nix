@@ -178,6 +178,8 @@ in
       nnoremap <F5> <esc>:%s/\s\+$//e<cr>
     '';
   };
+   programs.neovim.enable = true;
+   #programs.neovim.viAlias = true;
 
     #services.lorri.enable = true;
     programs.direnv.enable = true;
@@ -223,6 +225,7 @@ in
         "dojjmigcfgjcjakkdhmnkcjajbjcjnja"
         "efjgjleilhflffpbnkaofpmdnajdpepi"
         "elicpjhcidhpjomhibiffojpinpmmpil"
+        "djlkbfdlljbachafjmfomhaciglnmkgj"
       ]; 
     };
 
@@ -234,10 +237,22 @@ in
        pkgs.home-manager
        pkgs.qutebrowser
        #nur.repos.wolfangaukang.vdhcoapp
+       #pkgs.neovim 
        pkgs.calibre pkgs.qalculate-gtk
+       pkgs.vlc
        pkgs.python38Full mach-nix 
        pkgs.python38Packages.pip pkgs.python38Packages.poetry
        #python-with-my-packages
+       #region todo remove for plasma hud
+       #(pkgs.python38Full.buildEnv.override {
+       #  extraLibs = with pkgs.python38Packages; [
+       #    dbus-python
+       #    dbus-next
+       #    xlib
+       #  ];
+       #})
+       #endregion todo remove for plasma hud
+
        pkgs.dotnet-sdk_5
        #pkgs.dotnet-sdk_3
        #pkgs.dotnet-sdk

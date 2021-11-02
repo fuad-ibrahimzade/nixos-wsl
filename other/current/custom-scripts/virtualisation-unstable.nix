@@ -4,8 +4,12 @@ let
 in
 {
 
-  disabledModules = [ "virtualisation/virtualbox-host.nix" ];
-  imports = [ <nixpkgs/nixos/modules/virtualisation/virtualbox-host.nix> ];
+  disabledModules = [ 
+    "virtualisation/virtualbox-host.nix" 
+  ];
+  imports = [ 
+    <nixpkgs/nixos/modules/virtualisation/virtualbox-host.nix> 
+  ];
 
 
 

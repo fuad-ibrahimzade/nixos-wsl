@@ -43,7 +43,7 @@ bindsym $mod+Control+l exec i3lock-fancy
 bindsym $mod+d exec dmenu_run
 
 #bindsym $mod+q exec i3-dmenu-desktop --dmenu=qmenu_hud
-#bindsym $mod+q exec zsh -c "qmenu_hud"
+bindsym $mod+q exec zsh -c "qmenu_hud"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -176,10 +176,30 @@ bindsym $mod+m scratchpad show, floating disable
 #exec_always --no-startup-id feh --bg-fill /usr/share/backgrounds/archlinux/xx14sh3bx3q41.png
 exec_always --no-startup-id feh --bg-fill ~/.config/background-image/nixos.png
 exec --no-startup-id hsetroot -solid '#000000'
-#exec i3-appmenu-service
-#bindsym $mod+x exec i3-hud-menu
-bindsym $mod+x exec i3-msg '[class="Xfce4-appfinder"] focus' & zsh -c "(($(i3-msg -t get_tree | grep -v \"xfce4-appfinder\" | wc -m))) && xfce4-appfinder -c"
+exec i3-appmenu-service
+bindsym $mod+x exec i3-hud-menu
+#bindsym $mod+x exec rofi -show run
+#bindsym $mod+x exec i3-msg '[class="Xfce4-appfinder"] focus' & zsh -c "(($(i3-msg -t get_tree | grep -v \"xfce4-appfinder\" | wc -m))) && xfce4-appfinder -c"
 #bindsym $mod+Shift+x exec comma xwininfo
 bindsym $mod+Shift+x exec i3-msg xprop
 for_window [title="Application Finder"] floating enable
 for_window [title="Application Finder"] resize set width 600 px
+#exec_always --no-startup-id uget-integrator &
+
+#region plasma-i3
+# general application settings
+for_window [window_role="pop-up"] floating enable
+for_window [class="plasmashell"] floating enable
+
+# close plasma desktop windows
+for_window [title="Desktop — Plasma"] kill;
+
+# disable focus
+no_focus [class="plasmashell"]
+no_focus [window_role="pop-up"]
+no_focus [window_type="notification"]
+
+focus_on_window_activation none
+focus_follows_mouse no
+mouse_warping none
+#endregion plasma-i3
