@@ -94,6 +94,14 @@ in
           #search --fs-uuid --set=root $FS_UUID
           #chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         #}
+        #menuentry "Hackintosh BOOTx64" {
+          #insmod part_gpt
+          #insmod fat
+          #insmod search_fs_uuid
+          #insmod chain
+          #search --fs-uuid --set=root $UUID
+          #chainloader /EFI/BOOT/BOOTx64.efi
+        #}
       #'';
       version = 2;
       useOSProber = true;
@@ -101,6 +109,8 @@ in
     };
   };
   time.hardwareClockInLocalTime = true;
+  boot.kernelModules = [ "applesmc" ];
+
 
 
   networking.networkmanager.enable = true;
@@ -576,6 +586,7 @@ programs.zsh.interactiveShellInit = ''
     wineWowPackages.stable appimage-run
     libunity
     apt-offline
+    dmg2img
   ];
 
   nix = {
