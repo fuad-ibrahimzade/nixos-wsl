@@ -1,0 +1,27 @@
+------------------------------------------
+05.11.2021 21:57:35
+AWGG 0.6.0.6032 Build with FPC 3.2.0 and LCL 2.0.12.0
+CPU: x86_64
+OS: Linux
+Widget Type: QT5
+
+EAccessViolation:Access violation
+
+  $0000000000000000 in 
+  $0000000000713526 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006F5283 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006F549B in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000007132E2 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $0000000000435A9B in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006F55BB in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000007C78A0 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006B444E in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006B442A in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006B209B in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $00000000006B68F6 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $000000000066CB61 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $000000000043603A in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $000000000066AC66 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $0000000000665A39 in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+  $000000000043603A in /nix/store/kg5l7apfzrl732cx2h2ljinnn9jc2v92-AWGG/bin/awgg
+------------------------------------------

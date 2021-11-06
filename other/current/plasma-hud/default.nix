@@ -2,9 +2,26 @@
 
 let
   pkgs = import <nixpkgs> {};
+
+  python = pkgs.python38.withPackages (ps : with ps; [
+    #pybind11 qcelemental numpy pylibefp
+    dbus-next
+    dbus-python
+    pycairo
+    pygobject3
+    ps.setproctitle
+    ps.xlib
+  ]);
+
   
   myDerivation = pkgs.stdenv.mkDerivation {
     name = "plasma-hud";
+    #nativeBuildInputs = [
+    #  pkgs.makeWrapper
+    #  #pkgs.autoPatchelfHook # Automatically setup the loader, and do the magic
+    #  pkgs.wrapGAppsHook
+    #];
+
     buildInputs = [
       pkgs.rofi
   
@@ -57,10 +74,18 @@ let
     chmod +x $out/bin/plasma-hud
    '';
 };
+
   mergedDrv = pkgs.symlinkJoin {
     name ="merged-package";
-    paths = [ pkgs.gtk3 myDerivation.out ];
+    paths = [ pkgs.gtk3 myDerivation.out plasma-hud-bin.out ];
   };
+
+  plasma-hud-bin = pkgs.writeShellScriptBin "plasma-hud-bin" ''
+    #"${python}/bin/python" "{mergedDrv.out}/bin/plasma-hud";
+    #plasma-hud-executable=$(find ${myDerivation.out}/ -type f -regex ".*plasma-hud$")
+    plasma-hud-executable=$(find $out/ -type f -regex ".*plasma-hud$")
+    "$out/bin/python" "$plasma-hud-executable";
+  '';
 
 
  

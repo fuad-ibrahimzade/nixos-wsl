@@ -229,6 +229,8 @@ in
       ]; 
     };
 
+    #programs.java.enable = true;
+
     nixpkgs.config.allowUnfree = true;
 
     home.packages = [
@@ -243,7 +245,6 @@ in
        pkgs.python38Full mach-nix 
        pkgs.python38Packages.pip pkgs.python38Packages.poetry
        #python-with-my-packages
-       #region todo remove for plasma hud
        #(pkgs.python38Full.buildEnv.override {
        #  extraLibs = with pkgs.python38Packages; [
        #    dbus-python
@@ -251,7 +252,6 @@ in
        #    xlib
        #  ];
        #})
-       #endregion todo remove for plasma hud
 
        pkgs.dotnet-sdk_5
        #pkgs.dotnet-sdk_3

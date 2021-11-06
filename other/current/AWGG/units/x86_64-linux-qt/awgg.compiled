@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/usr/bin/fpc" Date="1"/>
+  <Params Value=" -Px86_64 -MObjFPC -Scaghi -Cg -Ci -O2 -gw2 -godwarfsets -Xg -k-z -krelro -k--as-needed -l -vewibq -vn-h- -Fi/home/qaqulya/Downloads/AWGG/units/x86_64-linux-qt -Fu/home/qaqulya/.lazarus/lib/LazControls/lib/x86_64-linux/qt -Fu/home/qaqulya/.lazarus/lib/SynEdit/units/x86_64-linux/qt -Fu/home/qaqulya/.lazarus/lib/units/x86_64-linux/qt -Fu/home/qaqulya/.lazarus/lib/DateTimeCtrls/lib/x86_64-linux/qt -Fu/home/qaqulya/.lazarus/lib/LCLBase/units/x86_64-linux -Fu/home/qaqulya/.lazarus/lib/LazUtils/lib/x86_64-linux -Fu/home/qaqulya/.lazarus/lib/units/x86_64-linux -Fu/home/qaqulya/Downloads/AWGG/src/ -FU/home/qaqulya/Downloads/AWGG/units/x86_64-linux-qt/ -FE/home/qaqulya/Downloads/AWGG/ -o/home/qaqulya/Downloads/AWGG/awgg -dLCL -dLCLqt -dbeta -dDisableUTF8RTL awgg.lpr"/>
+  <Complete Value="False"/>
+</CONFIG>

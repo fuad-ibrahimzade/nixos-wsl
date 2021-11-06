@@ -40,6 +40,8 @@ let
   plasma-i3-session-package = (pkgs.callPackage "/etc/nixos/custom-scripts/plasma-i3.nix" {});
   plasma-hud = (pkgs.callPackage "/etc/nixos/plasma-hud/default.nix" {});
   motrix = (pkgs.callPackage "/etc/nixos/motrix/default.nix" {});
+  #awgg-download-manager = (pkgs.callPackage "/etc/nixos/AWGG/default.nix" {});
+  awgg-download-manager = (import "/etc/nixos/AWGG/default.nix");
     
 in
 {
@@ -63,6 +65,41 @@ in
   # boot.loader.grub.efiInstallAsRemovable = true;
   # boot.loader.grub.efiSupport = true;
   # boot.loader.grub.useOSProber = true;
+
+  #for dual booting grub windows
+  #boot.loader = {
+    #efi = {
+      #canTouchEfiVariables = true;
+      ## assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
+      #efiSysMountPoint = "/boot";
+    #};
+    #grub = {
+      ## despite what the configuration.nix manpage seems to indicate,
+      ## as of release 17.09, setting device to "nodev" will still call
+      ## `grub-install` if efiSupport is true
+      ## (the devices list is not used by the EFI grub install,
+      ## but must be set to some value in order to pass an assert in grub.nix)
+      #devices = [ "nodev" ];
+      ##device = "/dev/sda";
+      #efiSupport = true;
+      #enable = true;
+      ## set $FS_UUID to the UUID of the EFI partition
+      ##extraEntries = ''
+        ##menuentry "Windows" {
+          ##insmod part_gpt
+          ##insmod fat
+          ##insmod search_fs_uuid
+          ##insmod chain
+          ##search --fs-uuid --set=root $FS_UUID
+          ##chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+        ##}
+      ##'';
+      #version = 2;
+      #useOSProber = true;
+    #};
+  #};
+  #time.hardwareClockInLocalTime = true;
+
 
   networking.networkmanager.enable = true;
   networking.wireless.iwd.enable = true;
@@ -478,6 +515,7 @@ programs.zsh.interactiveShellInit = ''
     w3m links2
     #uget uget-integrator
     motrix
+    awgg-download-manager
     
     #haskellPackages.greenclip
     i3lock-fancy xxkb
@@ -487,6 +525,7 @@ programs.zsh.interactiveShellInit = ''
     plotinus
     i3-gaps i3-hud-menu
     plasma-hud
+    #synapse
     keynav
     at-spi2-atk
     #xfce.xfce4-i3-workspaces-plugin
@@ -513,6 +552,7 @@ programs.zsh.interactiveShellInit = ''
     #libsForQt5.full
     libsForQt5.krunner
     libsForQt5.discover
+    libsForQt5.ark
     libsForQt5.plasma-browser-integration
     #cmake 
     dmenu 
@@ -553,12 +593,15 @@ programs.zsh.interactiveShellInit = ''
   #];
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
   services.bamf.enable = true;
+  #services.zeitgeist.enable = true;
+
  
   environment.variables = { 
     EDITOR = "vim"; 
     #XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
     #XDG_DATA_DIRS = lib.mkOverride 50 "$XDG_DATA_DIRS:${appmenu-gtk-module3}/share/gsettings-schemas/appmenu-gtk3-module-0.7.6/glib-2.0/schemas";
     XDG_DATA_DIRS = lib.mkOverride 50 "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}";
+    #XDG_DATA_DIRS = lib.mkOverride 50 "${pkgs.plotinus}/share/gsettings-schemas/${pkgs.plotinus.name}/glib-2.0/schemas";
     #GTK3_MODULES = "${pkgs.plotinus}/lib";
     #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";
     #GTK3_MODULES = "${pkgs.plotinus}/lib/libplotinus.so";

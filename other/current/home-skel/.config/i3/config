@@ -163,6 +163,7 @@ gaps inner 15
 exec --no-startup-id tint2 /home/user/.config/tint2/tint2rc
 #bindsym $mod+Shift+p exec rofi -show power-menu -modi power-menu:rofi-power-menu
 #bindsym $mod+Shift+p exec lxqt-leave
+#bindsym $mod+Shift+p exec xfce4-session-logout
 bindsym $mod+Shift+p exec xfce4-session-logout
 bindsym $mod+z exec morc_menu
 bindsym $mod+Shift+z exec jgmenu_run
@@ -184,7 +185,7 @@ bindsym $mod+x exec i3-hud-menu
 bindsym $mod+Shift+x exec i3-msg xprop
 for_window [title="Application Finder"] floating enable
 for_window [title="Application Finder"] resize set width 600 px
-#exec_always --no-startup-id uget-integrator &
+exec_always --no-startup-id uget-integrator &
 
 #region plasma-i3
 # general application settings
