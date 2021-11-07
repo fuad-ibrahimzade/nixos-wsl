@@ -42,6 +42,7 @@ let
   motrix = (pkgs.callPackage "/etc/nixos/motrix/default.nix" {});
   #awgg-download-manager = (pkgs.callPackage "/etc/nixos/AWGG/default.nix" {});
   awgg-download-manager = (import "/etc/nixos/AWGG/default.nix");
+  torrent2magnet = (pkgs.callPackage "/etc/nixos/torrent2magnet/default.nix" {});
     
 in
 {
@@ -85,7 +86,7 @@ in
       efiSupport = true;
       enable = true;
       # set $FS_UUID to the UUID of the EFI partition
-      #extraEntries = ''
+      extraEntries = ''
         #menuentry "Windows" {
           #insmod part_gpt
           #insmod fat
@@ -94,6 +95,14 @@ in
           #search --fs-uuid --set=root $FS_UUID
           #chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         #}
+        menuentry "clover BOOTx64" {
+          insmod part_gpt
+          insmod fat
+          insmod search_fs_uuid
+          insmod chain
+          search --fs-uuid --set=root D7A4-6DCE
+          chainloader /EFI/CLOVER/CLOVERX64.efi
+        }
         #menuentry "Hackintosh BOOTx64" {
           #insmod part_gpt
           #insmod fat
@@ -102,7 +111,21 @@ in
           #search --fs-uuid --set=root $UUID
           #chainloader /EFI/BOOT/BOOTx64.efi
         #}
-      #'';
+        #menuentry "Mac OS" {
+        #   insmod hfsplus
+        #   set root=(hd0,gpt4)
+        #   set isofile='/iso/linuxmint-19.3-cinnamon-64bit.iso'
+        #   loopback loop (hd0,gpt4)''\${isofile}
+        #   search --set=root --file /System/Library/CoreServices/boot.efi
+        #   chainloader /System/Library/CoreServices/boot.efi
+        #}
+        #menuentry "Reboot" {
+          #reboot
+        #}
+        #menuentry "Poweroff" {
+          #halt
+        #}
+      '';
       version = 2;
       useOSProber = true;
       efiInstallAsRemovable = true;
@@ -528,7 +551,7 @@ programs.zsh.interactiveShellInit = ''
     w3m links2
     #uget uget-integrator
     motrix
-    awgg-download-manager
+    awgg-download-manager dumptorrent torrent2magnet
     
     #haskellPackages.greenclip
     i3lock-fancy xxkb
@@ -587,6 +610,7 @@ programs.zsh.interactiveShellInit = ''
     libunity
     apt-offline
     dmg2img
+    hfsprogs
   ];
 
   nix = {
